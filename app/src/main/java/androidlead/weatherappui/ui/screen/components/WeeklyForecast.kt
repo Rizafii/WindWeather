@@ -13,6 +13,7 @@ import androidlead.weatherappui.ui.theme.ColorTextPrimaryVariant
 import androidlead.weatherappui.ui.theme.ColorTextSecondary
 import androidlead.weatherappui.ui.theme.ColorTextSecondaryVariant
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -100,7 +101,7 @@ private fun Forecast(
     val updatedModifier = remember(item.isSelected) {
         if (item.isSelected) {
             modifier.background(
-                shape = RoundedCornerShape(percent = 50),
+                shape = RoundedCornerShape(20.dp),
                 brush = Brush.linearGradient(
                     0f to ColorGradient1,
                     0.5f to ColorGradient2,
@@ -108,7 +109,10 @@ private fun Forecast(
                 )
             )
         } else {
-            modifier
+            modifier.background(
+                color = Color.White.copy(alpha = 0.15f),
+                shape = RoundedCornerShape(20.dp)
+            )
         }
     }
 
@@ -139,15 +143,26 @@ private fun Forecast(
         }
     }
 
-    Column(
-        modifier = updatedModifier
-            .width(65.dp)
-            .padding(
+    Surface(
+        modifier = updatedModifier.width(65.dp),
+        shape = RoundedCornerShape(20.dp),
+        color = Color.Transparent,
+        border = androidx.compose.foundation.BorderStroke(
+            width = 1.dp,
+            color = if (item.isSelected) {
+                Color.White.copy(alpha = 0.3f)
+            } else {
+                Color.White.copy(alpha = 0.2f)
+            }
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(
                 horizontal = 10.dp,
                 vertical = 16.dp
             ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
         Text(
             text = item.dayOfWeek,
             style = MaterialTheme.typography.labelLarge,
@@ -176,10 +191,11 @@ private fun Forecast(
         Spacer(
             modifier = Modifier.height(8.dp)
         )
-        AirQualityIndicator(
-            value = item.airQuality,
-            color = item.airQualityIndicatorColorHex
-        )
+            AirQualityIndicator(
+                value = item.airQuality,
+                color = item.airQualityIndicatorColorHex
+            )
+        }
     }
 }
 
