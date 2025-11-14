@@ -1,0 +1,56 @@
+[versions]
+agp = "8.5.2"
+kotlin = "1.9.0"
+androidx-core = "1.13.1"
+androidx-runtime = "2.8.4"
+compose-activity = "1.9.1"
+compose-bom = "2024.06.00"
+compose-constrain-layout = "1.0.1"
+retrofit = "2.9.0"
+okhttp = "4.12.0"
+moshi = "1.15.0"
+coroutines = "1.7.3"
+location = "21.3.0"
+viewmodel = "2.8.4"
+datastore = "1.1.1"
+navigation = "2.7.7"
+serialization = "1.6.0"
+
+[libraries]
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-runtime" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "compose-constrain-layout" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
+
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutines" }
+location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location" }
+viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "viewmodel" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+
+
+[bundles]
+androidX = ["androidx-core", "androidx-lifecycle"]
+ui = ["compose-ui", "compose-graphics", "compose-tooling-preview", "compose-activity", "androidx-material3", "compose-constraint-layout"]
+networking = ["retrofit", "retrofit-moshi", "okhttp-logging", "moshi"]
+coroutines = ["coroutines-core", "coroutines-android", "coroutines-play-services"]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
