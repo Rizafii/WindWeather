@@ -38,7 +38,7 @@ fun WeatherTips(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(32.dp),
+        shape = RoundedCornerShape(16.dp),
         color = Color.Transparent
     ) {
         Box(modifier = Modifier) {
@@ -47,7 +47,7 @@ fun WeatherTips(
                     .matchParentSize()
                     .background(
                         color = Color.Black.copy(alpha = 0.25f),
-                        shape = RoundedCornerShape(32.dp)
+                        shape = RoundedCornerShape(16.dp)
                     )
             )
             Column(
