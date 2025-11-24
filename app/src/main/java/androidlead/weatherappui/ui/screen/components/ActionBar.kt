@@ -69,7 +69,7 @@ private fun ControlButton(
             ),
     ) {
         Surface(
-            color = Color.Black.copy(alpha=0.2f),
+            color = Color.Black.copy(alpha = 0.25f),
             shape = CircleShape,
             modifier = Modifier.fillMaxSize()
         ) {
@@ -127,7 +127,7 @@ private fun LocationInfo(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(50)) // Bentuk kapsul/pill
-            .background(color = Color.Black.copy(alpha = 0.2f))
+            .background(color = Color.Black.copy(alpha = 0.25f))
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),

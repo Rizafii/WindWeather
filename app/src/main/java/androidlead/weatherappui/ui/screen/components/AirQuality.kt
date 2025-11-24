@@ -41,7 +41,7 @@ fun AirQuality(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = Color.Black.copy(alpha = 0.1f)
+        color = Color.Black.copy(alpha = 0.25f)
     ) {
         Column(
             modifier = Modifier.padding(

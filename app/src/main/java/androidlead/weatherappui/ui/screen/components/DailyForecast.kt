@@ -171,7 +171,7 @@ private fun CardBackground(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = Color.Black.copy(alpha=0.2f),
+                color = Color.Black.copy(alpha = 0.25f),
                 shape = RoundedCornerShape(32.dp)
             )
 //            .background(

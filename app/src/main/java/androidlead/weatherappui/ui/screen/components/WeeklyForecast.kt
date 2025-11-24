@@ -115,7 +115,7 @@ private fun Forecast(
             )
         } else {
             modifier.background(
-                color = Color.Black.copy(alpha = 0.1f),
+                color = Color.Black.copy(alpha = 0.25f),
                 shape = RoundedCornerShape(20.dp)
             )
         }
