@@ -3,6 +3,7 @@ package androidlead.weatherappui.ui.screen
 import androidlead.weatherappui.ui.screen.components.ActionBar
 import androidlead.weatherappui.ui.screen.components.AirQuality
 import androidlead.weatherappui.ui.screen.components.DailyForecast
+import androidlead.weatherappui.ui.screen.components.WeatherTips
 import androidlead.weatherappui.ui.screen.components.WeatherVideoBackground
 import androidlead.weatherappui.ui.screen.components.WeeklyForecast
 import androidlead.weatherappui.viewmodel.WeatherViewModel
@@ -97,6 +98,11 @@ fun WeatherScreen(
                         onItemClick = { dayIndex ->
                             viewModel.selectDay(dayIndex)
                         }
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    WeatherTips(
+                        tips = uiState.weatherTips
                     )
                 }
             }

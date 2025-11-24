@@ -1,8 +1,70 @@
 package androidlead.weatherappui.util
 
 import androidlead.weatherappui.R
+import androidlead.weatherappui.ui.screen.util.WeatherTipItem
 
 object WeatherCodeMapper {
+
+    fun getWeatherTips(weatherCode: Int, temperature: Int, uvIndex: Int = 0, humidity: Int = 0): List<WeatherTipItem> {
+        val tips = mutableListOf<WeatherTipItem>()
+
+        // Temperature-based tips
+        when {
+            temperature >= 30 -> {
+                tips.add(WeatherTipItem(R.drawable.ic_water_bottle, "Stay Hydrated", "Drink plenty of water"))
+                tips.add(WeatherTipItem(R.drawable.ic_sunscreen, "Use Sunscreen", "Protect your skin"))
+                tips.add(WeatherTipItem(R.drawable.ic_hat, "Wear Hat", "Protect from heat"))
+                tips.add(WeatherTipItem(R.drawable.ic_sunglasses, "Wear Sunglasses", "Protect your eyes"))
+            }
+            temperature >= 20 -> {
+                tips.add(WeatherTipItem(R.drawable.ic_sunglasses, "Wear Sunglasses", "Nice sunny day"))
+                tips.add(WeatherTipItem(R.drawable.ic_water_bottle, "Stay Hydrated", "Keep drinking water"))
+            }
+            temperature >= 10 -> {
+                tips.add(WeatherTipItem(R.drawable.ic_jacket, "Light Jacket", "Bring a light jacket"))
+            }
+            temperature < 10 -> {
+                tips.add(WeatherTipItem(R.drawable.ic_warm_clothes, "Warm Clothes", "Dress warmly"))
+                tips.add(WeatherTipItem(R.drawable.ic_jacket, "Winter Jacket", "It's quite cold"))
+            }
+        }
+
+        // Weather condition-based tips
+        when (weatherCode) {
+            // Rain conditions
+            51, 53, 55, 61, 63, 65, 80, 81, 82 -> {
+                tips.add(WeatherTipItem(R.drawable.ic_umbrella, "Bring Umbrella", "Rain expected"))
+                tips.add(WeatherTipItem(R.drawable.ic_jacket, "Waterproof Jacket", "Stay dry"))
+            }
+            // Thunderstorm
+            95, 96, 99 -> {
+                tips.add(WeatherTipItem(R.drawable.ic_umbrella, "Bring Umbrella", "Storm warning"))
+                tips.add(WeatherTipItem(R.drawable.ic_jacket, "Stay Indoor", "Avoid outdoor activities"))
+            }
+            // Fog
+            45, 48 -> {
+                tips.add(WeatherTipItem(R.drawable.ic_wind, "Drive Carefully", "Low visibility"))
+            }
+            // Clear/Sunny
+            0 -> {
+                if (uvIndex > 5) {
+                    tips.add(WeatherTipItem(R.drawable.ic_sunscreen, "Use Sunscreen", "High UV index"))
+                }
+            }
+        }
+
+        // Humidity-based tips
+        if (humidity > 70) {
+            tips.add(WeatherTipItem(R.drawable.ic_mosquito, "Mosquito Alert", "Use repellent"))
+        }
+
+        // Return at least 3 tips, add generic ones if needed
+        if (tips.size < 3) {
+            tips.add(WeatherTipItem(R.drawable.ic_water_bottle, "Stay Hydrated", "Drink water regularly"))
+        }
+
+        return tips.take(6) // Maximum 6 tips
+    }
 
     fun getWeatherVideo(weatherCode: Int): Int {
         return when (weatherCode) {

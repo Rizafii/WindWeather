@@ -11,6 +11,7 @@ import androidlead.weatherappui.service.LocationService
 import androidlead.weatherappui.ui.screen.util.AirQualityItem
 import androidlead.weatherappui.ui.screen.util.ForecastItem
 import androidlead.weatherappui.ui.screen.util.HourlyForecastItem
+import androidlead.weatherappui.ui.screen.util.WeatherTipItem
 import androidlead.weatherappui.util.WeatherCodeMapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,6 +30,7 @@ data class WeatherUiState(
     val forecastItems: List<ForecastItem> = emptyList(),
     val hourlyForecastItems: List<HourlyForecastItem> = emptyList(),
     val airQualityItems: List<AirQualityItem> = emptyList(),
+    val weatherTips: List<WeatherTipItem> = emptyList(),
     val currentTemperature: String = "21",
     val currentDescription: String = "Rain showers",
     val currentDate: String = "Monday, 12 Feb",
@@ -115,12 +117,21 @@ class WeatherViewModel(context: Context) : ViewModel() {
                 val airQualityItems = mapToAirQualityItems(weatherResponse)
                 val hourlyForecastItems = mapToHourlyForecastItems(weatherResponse)
 
+                // Generate weather tips
+                val weatherTips = WeatherCodeMapper.getWeatherTips(
+                    weatherCode = weatherResponse.current.weatherCode,
+                    temperature = weatherResponse.current.temperature.toInt(),
+                    uvIndex = weatherResponse.daily.uvIndexMax.firstOrNull()?.toInt() ?: 0,
+                    humidity = weatherResponse.current.humidity
+                )
+
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     weatherData = weatherResponse,
                     forecastItems = forecastItems,
                     hourlyForecastItems = hourlyForecastItems,
                     airQualityItems = airQualityItems,
+                    weatherTips = weatherTips,
                     currentTemperature = weatherResponse.daily.temperatureMax.firstOrNull()?.toInt()?.toString() ?: "21",
                     currentDescription = WeatherCodeMapper.getWeatherDescription(weatherResponse.current.weatherCode),
                     currentDate = getCurrentDate(),
@@ -329,10 +340,19 @@ class WeatherViewModel(context: Context) : ViewModel() {
             // Update air quality for selected day
             val airQualityItems = mapToAirQualityItems(weatherData, dayIndex)
 
+            // Generate weather tips for selected day
+            val weatherTips = WeatherCodeMapper.getWeatherTips(
+                weatherCode = selectedWeatherCode,
+                temperature = selectedMaxTemp,
+                uvIndex = dailyData.uvIndexMax.getOrNull(dayIndex)?.toInt() ?: 0,
+                humidity = weatherData.current.humidity
+            )
+
             _uiState.value = _uiState.value.copy(
                 forecastItems = forecastItems,
                 hourlyForecastItems = hourlyForecastItems,
                 airQualityItems = airQualityItems,
+                weatherTips = weatherTips,
                 currentTemperature = selectedMaxTemp.toString(),
                 currentDescription = WeatherCodeMapper.getWeatherDescription(selectedWeatherCode),
                 currentDate = formattedDate,
