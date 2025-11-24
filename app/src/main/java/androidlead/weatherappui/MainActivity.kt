@@ -1,8 +1,10 @@
 package androidlead.weatherappui
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import androidlead.weatherappui.data.PreferencesManager
 import androidlead.weatherappui.navigation.WeatherNavHost
 import androidlead.weatherappui.ui.theme.WeatherAppUiTheme
 import androidlead.weatherappui.viewmodel.WeatherViewModel
@@ -24,6 +26,12 @@ class MainActivity : ComponentActivity() {
             // Permission granted - ViewModel will automatically handle location fetch if needed
         }
         // If permission denied, app will use default location (Rome)
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val prefsManager = PreferencesManager.getInstance(newBase)
+        prefsManager.applyLanguage(newBase)
+        super.attachBaseContext(newBase)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

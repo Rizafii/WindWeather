@@ -1,31 +1,32 @@
 package androidlead.weatherappui.util
 
+import android.content.Context
 import androidlead.weatherappui.R
 import androidlead.weatherappui.ui.screen.util.WeatherTipItem
 
 object WeatherCodeMapper {
 
-    fun getWeatherTips(weatherCode: Int, temperature: Int, uvIndex: Int = 0, humidity: Int = 0): List<WeatherTipItem> {
+    fun getWeatherTips(context: Context, weatherCode: Int, temperature: Int, uvIndex: Int = 0, humidity: Int = 0): List<WeatherTipItem> {
         val tips = mutableListOf<WeatherTipItem>()
 
         // Temperature-based tips
         when {
             temperature >= 30 -> {
-                tips.add(WeatherTipItem(R.drawable.ic_water_bottle, "Stay Hydrated", "Drink plenty of water"))
-                tips.add(WeatherTipItem(R.drawable.ic_sunscreen, "Use Sunscreen", "Protect your skin"))
-                tips.add(WeatherTipItem(R.drawable.ic_hat, "Wear Hat", "Protect from heat"))
-                tips.add(WeatherTipItem(R.drawable.ic_sunglasses, "Wear Sunglasses", "Protect your eyes"))
+                tips.add(WeatherTipItem(R.drawable.ic_water_bottle, context.getString(R.string.tip_stay_hydrated), context.getString(R.string.tip_drink_water)))
+                tips.add(WeatherTipItem(R.drawable.ic_sunscreen, context.getString(R.string.tip_use_sunscreen), context.getString(R.string.tip_protect_skin)))
+                tips.add(WeatherTipItem(R.drawable.ic_hat, context.getString(R.string.tip_wear_hat), context.getString(R.string.tip_protect_heat)))
+                tips.add(WeatherTipItem(R.drawable.ic_sunglasses, context.getString(R.string.tip_wear_sunglasses), context.getString(R.string.tip_protect_eyes)))
             }
             temperature >= 20 -> {
-                tips.add(WeatherTipItem(R.drawable.ic_sunglasses, "Wear Sunglasses", "Nice sunny day"))
-                tips.add(WeatherTipItem(R.drawable.ic_water_bottle, "Stay Hydrated", "Keep drinking water"))
+                tips.add(WeatherTipItem(R.drawable.ic_sunglasses, context.getString(R.string.tip_wear_sunglasses), context.getString(R.string.tip_nice_day)))
+                tips.add(WeatherTipItem(R.drawable.ic_water_bottle, context.getString(R.string.tip_stay_hydrated), context.getString(R.string.tip_keep_drinking)))
             }
             temperature >= 10 -> {
-                tips.add(WeatherTipItem(R.drawable.ic_jacket, "Light Jacket", "Bring a light jacket"))
+                tips.add(WeatherTipItem(R.drawable.ic_jacket, context.getString(R.string.tip_light_jacket), context.getString(R.string.tip_bring_jacket)))
             }
             temperature < 10 -> {
-                tips.add(WeatherTipItem(R.drawable.ic_warm_clothes, "Warm Clothes", "Dress warmly"))
-                tips.add(WeatherTipItem(R.drawable.ic_jacket, "Winter Jacket", "It's quite cold"))
+                tips.add(WeatherTipItem(R.drawable.ic_warm_clothes, context.getString(R.string.tip_warm_clothes), context.getString(R.string.tip_dress_warmly)))
+                tips.add(WeatherTipItem(R.drawable.ic_jacket, context.getString(R.string.tip_winter_jacket), context.getString(R.string.tip_quite_cold)))
             }
         }
 
@@ -33,34 +34,34 @@ object WeatherCodeMapper {
         when (weatherCode) {
             // Rain conditions
             51, 53, 55, 61, 63, 65, 80, 81, 82 -> {
-                tips.add(WeatherTipItem(R.drawable.ic_umbrella, "Bring Umbrella", "Rain expected"))
-                tips.add(WeatherTipItem(R.drawable.ic_jacket, "Waterproof Jacket", "Stay dry"))
+                tips.add(WeatherTipItem(R.drawable.ic_umbrella, context.getString(R.string.tip_bring_umbrella), context.getString(R.string.tip_rain_expected)))
+                tips.add(WeatherTipItem(R.drawable.ic_jacket, context.getString(R.string.tip_waterproof), context.getString(R.string.tip_stay_dry)))
             }
             // Thunderstorm
             95, 96, 99 -> {
-                tips.add(WeatherTipItem(R.drawable.ic_umbrella, "Bring Umbrella", "Storm warning"))
-                tips.add(WeatherTipItem(R.drawable.ic_jacket, "Stay Indoor", "Avoid outdoor activities"))
+                tips.add(WeatherTipItem(R.drawable.ic_umbrella, context.getString(R.string.tip_bring_umbrella), context.getString(R.string.tip_storm_warning)))
+                tips.add(WeatherTipItem(R.drawable.ic_jacket, context.getString(R.string.tip_stay_indoor), context.getString(R.string.tip_avoid_outdoor)))
             }
             // Fog
             45, 48 -> {
-                tips.add(WeatherTipItem(R.drawable.ic_wind, "Drive Carefully", "Low visibility"))
+                tips.add(WeatherTipItem(R.drawable.ic_wind, context.getString(R.string.tip_drive_carefully), context.getString(R.string.tip_low_visibility)))
             }
             // Clear/Sunny
             0 -> {
                 if (uvIndex > 5) {
-                    tips.add(WeatherTipItem(R.drawable.ic_sunscreen, "Use Sunscreen", "High UV index"))
+                    tips.add(WeatherTipItem(R.drawable.ic_sunscreen, context.getString(R.string.tip_use_sunscreen), context.getString(R.string.tip_high_uv)))
                 }
             }
         }
 
         // Humidity-based tips
         if (humidity > 70) {
-            tips.add(WeatherTipItem(R.drawable.ic_mosquito, "Mosquito Alert", "Use repellent"))
+            tips.add(WeatherTipItem(R.drawable.ic_mosquito, context.getString(R.string.tip_mosquito_alert), context.getString(R.string.tip_use_repellent)))
         }
 
         // Return at least 3 tips, add generic ones if needed
         if (tips.size < 3) {
-            tips.add(WeatherTipItem(R.drawable.ic_water_bottle, "Stay Hydrated", "Drink water regularly"))
+            tips.add(WeatherTipItem(R.drawable.ic_water_bottle, context.getString(R.string.tip_stay_hydrated), context.getString(R.string.tip_drink_regularly)))
         }
 
         return tips.take(6) // Maximum 6 tips
@@ -100,33 +101,21 @@ object WeatherCodeMapper {
         }
     }
 
-    fun getWeatherDescription(weatherCode: Int): String {
+    fun getWeatherDescription(context: Context, weatherCode: Int): String {
         return when (weatherCode) {
-            0 -> "Clear sky"
-            1 -> "Mainly clear"
-            2 -> "Partly cloudy"
-            3 -> "Overcast"
-            45 -> "Foggy"
-            48 -> "Depositing rime fog"
-            51 -> "Light drizzle"
-            53 -> "Moderate drizzle"
-            55 -> "Dense drizzle"
-            61 -> "Slight rain"
-            63 -> "Moderate rain"
-            65 -> "Heavy rain"
-            71 -> "Slight snow fall"
-            73 -> "Moderate snow fall"
-            75 -> "Heavy snow fall"
-            77 -> "Snow grains"
-            80 -> "Slight rain showers"
-            81 -> "Moderate rain showers"
-            82 -> "Violent rain showers"
-            85 -> "Slight snow showers"
-            86 -> "Heavy snow showers"
-            95 -> "Thunderstorm"
-            96 -> "Thunderstorm with slight hail"
-            99 -> "Thunderstorm with heavy hail"
-            else -> "Unknown"
+            0 -> context.getString(R.string.clear_sky)
+            1 -> context.getString(R.string.mainly_clear)
+            2 -> context.getString(R.string.partly_cloudy)
+            3 -> context.getString(R.string.overcast)
+            45, 48 -> context.getString(R.string.fog)
+            51, 53, 55 -> context.getString(R.string.drizzle)
+            61, 63, 65 -> context.getString(R.string.rain)
+            71, 73, 75, 77 -> context.getString(R.string.snow)
+            80, 81, 82 -> context.getString(R.string.rain_showers)
+            85, 86 -> context.getString(R.string.snow_showers)
+            95 -> context.getString(R.string.thunderstorm)
+            96, 99 -> context.getString(R.string.thunderstorm_with_hail)
+            else -> context.getString(R.string.partly_cloudy)
         }
     }
 }

@@ -3,6 +3,7 @@ agp = "8.5.2"
 kotlin = "1.9.0"
 androidx-core = "1.13.1"
 androidx-runtime = "2.8.4"
+androidx-appcompat = "1.7.0"
 compose-activity = "1.9.1"
 compose-bom = "2024.06.00"
 compose-constrain-layout = "1.0.1"
@@ -20,6 +21,7 @@ media3 = "1.2.1"
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
 androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-runtime" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -48,7 +50,7 @@ media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "medi
 
 
 [bundles]
-androidX = ["androidx-core", "androidx-lifecycle"]
+androidX = ["androidx-core", "androidx-lifecycle", "androidx-appcompat"]
 ui = ["compose-ui", "compose-graphics", "compose-tooling-preview", "compose-activity", "androidx-material3", "compose-constraint-layout"]
 networking = ["retrofit", "retrofit-moshi", "okhttp-logging", "moshi"]
 coroutines = ["coroutines-core", "coroutines-android", "coroutines-play-services"]

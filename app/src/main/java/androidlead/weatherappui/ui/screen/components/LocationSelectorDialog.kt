@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -41,7 +42,7 @@ fun LocationSelectorDialog(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = "Select Location",
+                    text = stringResource(R.string.select_location),
                     style = MaterialTheme.typography.titleLarge,
                     color = ColorTextPrimary,
                     fontWeight = FontWeight.Bold,
@@ -50,7 +51,12 @@ fun LocationSelectorDialog(
 
                 // Current location button
                 LocationItem(
-                    location = currentLocation ?: Location("Current Location", 0.0, 0.0, true),
+                    location = currentLocation ?: Location(
+                        name = "",
+                        latitude = 0.0,
+                        longitude = 0.0,
+                        isCurrentLocation = true
+                    ),
                     isCurrentLocation = true,
                     onClick = {
                         onCurrentLocationClick()
@@ -110,7 +116,7 @@ private fun LocationItem(
             Spacer(modifier = Modifier.width(12.dp))
             Column {
                 Text(
-                    text = location.name,
+                    text = if (isCurrentLocation) stringResource(R.string.current_location) else location.name,
                     style = MaterialTheme.typography.bodyLarge,
                     color = ColorTextPrimary,
                     fontWeight = FontWeight.Medium

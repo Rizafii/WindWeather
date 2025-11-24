@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -81,12 +82,12 @@ fun LocationsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Saved Locations", color = ColorTextPrimary) },
+                title = { Text(stringResource(R.string.saved_locations), color = ColorTextPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.Default.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.back),
                             tint = ColorTextPrimary
                         )
                     }
@@ -105,7 +106,7 @@ fun LocationsScreen(
                         } else {
                             Icon(
                                 Icons.Default.Refresh,
-                                contentDescription = "Refresh Weather Data",
+                                contentDescription = stringResource(R.string.refresh_weather),
                                 tint = ColorTextPrimary
                             )
                         }
@@ -122,7 +123,7 @@ fun LocationsScreen(
                 containerColor = ColorSurface,
                 contentColor = ColorTextPrimary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Location")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_location))
             }
         },
         containerColor = Color.Transparent
@@ -204,7 +205,7 @@ private fun AddCurrentLocationButton(
             ) {
                 Icon(
                     imageVector = Icons.Default.LocationOn,
-                    contentDescription = "Add Current Location",
+                    contentDescription = stringResource(R.string.add_current_location),
                     modifier = Modifier.size(32.dp),
                     tint = Color.White
                 )
@@ -214,13 +215,13 @@ private fun AddCurrentLocationButton(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "Use Current Location",
+                    text = stringResource(R.string.use_gps_location),
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = if (hasPermission) "Tap to add your GPS location" else "Location permission required",
+                    text = if (hasPermission) stringResource(R.string.add_current_location) else stringResource(R.string.location_permission_required),
                     style = MaterialTheme.typography.bodySmall,
                     color = ColorTextSecondary
                 )
@@ -228,7 +229,7 @@ private fun AddCurrentLocationButton(
 
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "Add",
+                contentDescription = stringResource(R.string.add_location),
                 tint = Color.White
             )
         }
@@ -252,12 +253,12 @@ private fun EmptyLocationsList() {
                 tint = ColorTextSecondary
             )
             Text(
-                text = "No saved locations",
+                text = stringResource(R.string.no_locations),
                 style = MaterialTheme.typography.bodyLarge,
                 color = ColorTextSecondary
             )
             Text(
-                text = "Tap + to add a location",
+                text = stringResource(R.string.add_first_location),
                 style = MaterialTheme.typography.bodyMedium,
                 color = ColorTextSecondary
             )

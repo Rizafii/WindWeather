@@ -42,7 +42,7 @@ data class WeatherUiState(
     val selectedDayIndex: Int = 0
 )
 
-class WeatherViewModel(context: Context) : ViewModel() {
+class WeatherViewModel(private val context: Context) : ViewModel() {
 
     private val repository = WeatherRepository()
     private val locationService = LocationService(context)
@@ -117,8 +117,13 @@ class WeatherViewModel(context: Context) : ViewModel() {
                 val airQualityItems = mapToAirQualityItems(weatherResponse)
                 val hourlyForecastItems = mapToHourlyForecastItems(weatherResponse)
 
+                // Get current date formatted
+                val calendar = Calendar.getInstance()
+                val formattedDate = SimpleDateFormat("EEEE, dd MMM", Locale.getDefault()).format(calendar.time)
+
                 // Generate weather tips
                 val weatherTips = WeatherCodeMapper.getWeatherTips(
+                    context = context,
                     weatherCode = weatherResponse.current.weatherCode,
                     temperature = weatherResponse.current.temperature.toInt(),
                     uvIndex = weatherResponse.daily.uvIndexMax.firstOrNull()?.toInt() ?: 0,
@@ -132,10 +137,10 @@ class WeatherViewModel(context: Context) : ViewModel() {
                     hourlyForecastItems = hourlyForecastItems,
                     airQualityItems = airQualityItems,
                     weatherTips = weatherTips,
-                    currentTemperature = weatherResponse.daily.temperatureMax.firstOrNull()?.toInt()?.toString() ?: "21",
-                    currentDescription = WeatherCodeMapper.getWeatherDescription(weatherResponse.current.weatherCode),
-                    currentDate = getCurrentDate(),
-                    feelsLike = "Current ${weatherResponse.current.temperature.toInt()}° • Feels like ${weatherResponse.current.apparentTemperature.toInt()}°",
+                    currentTemperature = weatherResponse.current.temperature.toInt().toString(),
+                    currentDescription = WeatherCodeMapper.getWeatherDescription(context, weatherResponse.current.weatherCode),
+                    currentDate = formattedDate,
+                    feelsLike = context.getString(R.string.feels_like) + " ${weatherResponse.current.apparentTemperature.toInt()}°",
                     currentWeatherIcon = WeatherCodeMapper.getWeatherIcon(weatherResponse.current.weatherCode),
                     currentWeatherVideo = WeatherCodeMapper.getWeatherVideo(weatherResponse.current.weatherCode),
                     currentLocation = _uiState.value.currentLocation?.copy(name = locationName)
@@ -216,32 +221,32 @@ class WeatherViewModel(context: Context) : ViewModel() {
 
         return listOf(
             AirQualityItem(
-                title = "Real Feel",
+                title = context.getString(R.string.real_feel),
                 value = "${avgTemp.toInt()}°",
                 icon = R.drawable.ic_real_feel
             ),
             AirQualityItem(
-                title = "Wind",
-                value = "${current.windSpeed.toInt()}km/h",
+                title = context.getString(R.string.wind),
+                value = "${current.windSpeed.toInt()}${context.getString(R.string.kmh)}",
                 icon = R.drawable.ic_wind_qality
             ),
             AirQualityItem(
-                title = "Humidity",
-                value = "$avgHumidity%",
+                title = context.getString(R.string.humidity),
+                value = "$avgHumidity${context.getString(R.string.percent)}",
                 icon = R.drawable.ic_so2
             ),
             AirQualityItem(
-                title = "Rain",
-                value = "0%",
+                title = context.getString(R.string.rain),
+                value = "0${context.getString(R.string.percent)}",
                 icon = R.drawable.ic_rain_chance
             ),
             AirQualityItem(
-                title = "UV Index",
+                title = context.getString(R.string.uv_index),
                 value = uvIndex.toString(),
                 icon = R.drawable.ic_uv_index
             ),
             AirQualityItem(
-                title = "Wind Dir",
+                title = context.getString(R.string.wind_dir),
                 value = "${current.windDirection}°",
                 icon = R.drawable.ic_o3
             )
@@ -342,6 +347,7 @@ class WeatherViewModel(context: Context) : ViewModel() {
 
             // Generate weather tips for selected day
             val weatherTips = WeatherCodeMapper.getWeatherTips(
+                context = context,
                 weatherCode = selectedWeatherCode,
                 temperature = selectedMaxTemp,
                 uvIndex = dailyData.uvIndexMax.getOrNull(dayIndex)?.toInt() ?: 0,
@@ -354,7 +360,7 @@ class WeatherViewModel(context: Context) : ViewModel() {
                 airQualityItems = airQualityItems,
                 weatherTips = weatherTips,
                 currentTemperature = selectedMaxTemp.toString(),
-                currentDescription = WeatherCodeMapper.getWeatherDescription(selectedWeatherCode),
+                currentDescription = WeatherCodeMapper.getWeatherDescription(context, selectedWeatherCode),
                 currentDate = formattedDate,
                 feelsLike = "High $selectedMaxTemp° • Low $selectedMinTemp°",
                 currentWeatherIcon = WeatherCodeMapper.getWeatherIcon(selectedWeatherCode),

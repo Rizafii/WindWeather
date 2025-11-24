@@ -1,0 +1,155 @@
+<resources>
+    <string name="app_name">Wind Weather</string>
+
+    <!-- Settings Modal -->
+    <string name="settings_title">Pengaturan</string>
+    <string name="language_section">Bahasa</string>
+    <string name="theme_section">Mode Tampilan</string>
+    <string name="close_button">Tutup</string>
+
+    <!-- Language Options -->
+    <string name="language_indonesian">Indonesia</string>
+    <string name="language_english">Inggris</string>
+
+    <!-- Theme Options -->
+    <string name="theme_dark">Mode Gelap</string>
+    <string name="theme_light">Mode Terang</string>
+
+    <!-- Weather Info -->
+    <string name="feels_like">Terasa seperti</string>
+    <string name="humidity">Kelembaban</string>
+    <string name="wind_speed">Kecepatan Angin</string>
+    <string name="uv_index">Indeks UV</string>
+    <string name="air_quality">Kualitas Udara</string>
+    <string name="visibility">Jarak Pandang</string>
+    <string name="pressure">Tekanan</string>
+
+    <!-- Days of Week -->
+    <string name="monday">Senin</string>
+    <string name="tuesday">Selasa</string>
+    <string name="wednesday">Rabu</string>
+    <string name="thursday">Kamis</string>
+    <string name="friday">Jumat</string>
+    <string name="saturday">Sabtu</string>
+    <string name="sunday">Minggu</string>
+
+    <!-- Short Days -->
+    <string name="mon">Sen</string>
+    <string name="tue">Sel</string>
+    <string name="wed">Rab</string>
+    <string name="thu">Kam</string>
+    <string name="fri">Jum</string>
+    <string name="sat">Sab</string>
+    <string name="sun">Min</string>
+
+    <!-- Weather Forecast -->
+    <string name="hourly_forecast">Prakiraan Per Jam</string>
+    <string name="weekly_forecast">Prakiraan Mingguan</string>
+    <string name="today">Hari Ini</string>
+    <string name="forecast_24h">Prakiraan 24 Jam</string>
+
+    <!-- Location -->
+    <string name="add_location">Tambah Lokasi</string>
+    <string name="search_location">Cari lokasi...</string>
+    <string name="current_location">Lokasi Saat Ini</string>
+    <string name="saved_locations">Lokasi Tersimpan</string>
+    <string name="select_location">Pilih Lokasi</string>
+    <string name="no_locations">Tidak ada lokasi tersimpan</string>
+    <string name="add_first_location">Tambahkan lokasi pertama Anda untuk memulai</string>
+
+    <!-- Location Actions -->
+    <string name="back">Kembali</string>
+    <string name="refresh_weather">Perbarui Data Cuaca</string>
+    <string name="add_current_location">Tambah Lokasi Saat Ini</string>
+    <string name="use_gps_location">Gunakan Lokasi GPS</string>
+    <string name="location_permission_required">Izin lokasi diperlukan</string>
+    <string name="delete_location">Hapus Lokasi</string>
+    <string name="cancel">Batal</string>
+    <string name="delete">Hapus</string>
+    <string name="confirm_delete">Apakah Anda yakin ingin menghapus lokasi ini?</string>
+
+    <!-- Search -->
+    <string name="search">Cari</string>
+    <string name="searching">Mencari...</string>
+    <string name="no_results">Tidak ada hasil ditemukan</string>
+    <string name="enter_location_name">Masukkan nama lokasi...</string>
+
+    <!-- Weather Tips -->
+    <string name="weather_tips">Tips Cuaca</string>
+    <string name="tip_stay_hydrated">Tetap Terhidrasi</string>
+    <string name="tip_drink_water">Minum banyak air</string>
+    <string name="tip_use_sunscreen">Gunakan Tabir Surya</string>
+    <string name="tip_protect_skin">Lindungi kulit Anda</string>
+    <string name="tip_wear_hat">Pakai Topi</string>
+    <string name="tip_protect_heat">Lindungi dari panas</string>
+    <string name="tip_wear_sunglasses">Pakai Kacamata</string>
+    <string name="tip_protect_eyes">Lindungi mata Anda</string>
+    <string name="tip_light_jacket">Jaket Tipis</string>
+    <string name="tip_bring_jacket">Bawa jaket tipis</string>
+    <string name="tip_warm_clothes">Pakaian Hangat</string>
+    <string name="tip_dress_warmly">Berpakaian hangat</string>
+    <string name="tip_winter_jacket">Jaket Musim Dingin</string>
+    <string name="tip_quite_cold">Cuaca cukup dingin</string>
+    <string name="tip_bring_umbrella">Bawa Payung</string>
+    <string name="tip_rain_expected">Kemungkinan hujan</string>
+    <string name="tip_waterproof">Jaket Anti Air</string>
+    <string name="tip_stay_dry">Tetap kering</string>
+    <string name="tip_storm_warning">Peringatan badai</string>
+    <string name="tip_stay_indoor">Tetap di Dalam</string>
+    <string name="tip_avoid_outdoor">Hindari aktivitas luar ruangan</string>
+    <string name="tip_drive_carefully">Berkendara Hati-hati</string>
+    <string name="tip_low_visibility">Jarak pandang rendah</string>
+    <string name="tip_high_uv">Indeks UV tinggi</string>
+    <string name="tip_mosquito_alert">Waspada Nyamuk</string>
+    <string name="tip_use_repellent">Gunakan obat anti nyamuk</string>
+    <string name="tip_nice_day">Hari yang cerah</string>
+    <string name="tip_keep_drinking">Tetap minum air</string>
+    <string name="tip_drink_regularly">Minum air secara teratur</string>
+
+    <!-- Weather Conditions -->
+    <string name="clear_sky">Langit cerah</string>
+    <string name="mainly_clear">Sebagian besar cerah</string>
+    <string name="partly_cloudy">Berawan sebagian</string>
+    <string name="overcast">Mendung</string>
+    <string name="fog">Kabut</string>
+    <string name="drizzle">Gerimis</string>
+    <string name="rain">Hujan</string>
+    <string name="rain_showers">Hujan deras</string>
+    <string name="snow">Salju</string>
+    <string name="snow_showers">Hujan salju</string>
+    <string name="thunderstorm">Badai petir</string>
+    <string name="thunderstorm_with_hail">Badai petir dengan hujan es</string>
+
+    <!-- Air Quality Components -->
+    <string name="pm25">PM2.5</string>
+    <string name="pm10">PM10</string>
+    <string name="so2">SO₂</string>
+    <string name="no2">NO₂</string>
+    <string name="o3">O₃</string>
+    <string name="co">CO</string>
+    <string name="real_feel">Terasa</string>
+    <string name="wind">Angin</string>
+    <string name="rain">Hujan</string>
+    <string name="wind_dir">Arah Angin</string>
+
+    <!-- Units -->
+    <string name="celsius">°C</string>
+    <string name="fahrenheit">°F</string>
+    <string name="kmh">km/jam</string>
+    <string name="mph">mph</string>
+    <string name="mm">mm</string>
+    <string name="percent">%</string>
+    <string name="hpa">hPa</string>
+
+    <!-- Errors -->
+    <string name="error_loading_weather">Gagal memuat data cuaca</string>
+    <string name="error_loading_location">Gagal memuat lokasi</string>
+    <string name="error_network">Kesalahan jaringan. Periksa koneksi Anda</string>
+    <string name="error_location_permission">Izin lokasi ditolak</string>
+    <string name="try_again">Coba Lagi</string>
+
+    <!-- Loading -->
+    <string name="loading">Memuat...</string>
+    <string name="please_wait">Mohon tunggu</string>
+</resources>
+

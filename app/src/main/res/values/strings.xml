@@ -1,3 +1,154 @@
 <resources>
     <string name="app_name">Wind Weather</string>
+
+    <!-- Settings Modal -->
+    <string name="settings_title">Settings</string>
+    <string name="language_section">Language</string>
+    <string name="theme_section">Display Mode</string>
+    <string name="close_button">Close</string>
+
+    <!-- Language Options -->
+    <string name="language_indonesian">Indonesian</string>
+    <string name="language_english">English</string>
+
+    <!-- Theme Options -->
+    <string name="theme_dark">Dark Mode</string>
+    <string name="theme_light">Light Mode</string>
+
+    <!-- Weather Info -->
+    <string name="feels_like">Feels like</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="uv_index">UV Index</string>
+    <string name="air_quality">Air Quality</string>
+    <string name="visibility">Visibility</string>
+    <string name="pressure">Pressure</string>
+
+    <!-- Days of Week -->
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+
+    <!-- Short Days -->
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="sun">Sun</string>
+
+    <!-- Weather Forecast -->
+    <string name="hourly_forecast">Hourly Forecast</string>
+    <string name="weekly_forecast">Weekly forecast</string>
+    <string name="today">Today</string>
+    <string name="forecast_24h">24h Forecast</string>
+
+    <!-- Location -->
+    <string name="add_location">Add Location</string>
+    <string name="search_location">Search location...</string>
+    <string name="current_location">Current Location</string>
+    <string name="saved_locations">Saved Locations</string>
+    <string name="select_location">Select Location</string>
+    <string name="no_locations">No saved locations</string>
+    <string name="add_first_location">Add your first location to get started</string>
+
+    <!-- Location Actions -->
+    <string name="back">Back</string>
+    <string name="refresh_weather">Refresh Weather Data</string>
+    <string name="add_current_location">Add Current Location</string>
+    <string name="use_gps_location">Use GPS Location</string>
+    <string name="location_permission_required">Location permission required</string>
+    <string name="delete_location">Delete Location</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete">Are you sure you want to delete this location?</string>
+
+    <!-- Search -->
+    <string name="search">Search</string>
+    <string name="searching">Searching...</string>
+    <string name="no_results">No results found</string>
+    <string name="enter_location_name">Enter location name...</string>
+
+    <!-- Weather Tips -->
+    <string name="weather_tips">Weather Tips</string>
+    <string name="tip_stay_hydrated">Stay Hydrated</string>
+    <string name="tip_drink_water">Drink plenty of water</string>
+    <string name="tip_use_sunscreen">Use Sunscreen</string>
+    <string name="tip_protect_skin">Protect your skin</string>
+    <string name="tip_wear_hat">Wear Hat</string>
+    <string name="tip_protect_heat">Protect from heat</string>
+    <string name="tip_wear_sunglasses">Wear Sunglasses</string>
+    <string name="tip_protect_eyes">Protect your eyes</string>
+    <string name="tip_light_jacket">Light Jacket</string>
+    <string name="tip_bring_jacket">Bring a light jacket</string>
+    <string name="tip_warm_clothes">Warm Clothes</string>
+    <string name="tip_dress_warmly">Dress warmly</string>
+    <string name="tip_winter_jacket">Winter Jacket</string>
+    <string name="tip_quite_cold">It\'s quite cold</string>
+    <string name="tip_bring_umbrella">Bring Umbrella</string>
+    <string name="tip_rain_expected">Rain expected</string>
+    <string name="tip_waterproof">Waterproof Jacket</string>
+    <string name="tip_stay_dry">Stay dry</string>
+    <string name="tip_storm_warning">Storm warning</string>
+    <string name="tip_stay_indoor">Stay Indoor</string>
+    <string name="tip_avoid_outdoor">Avoid outdoor activities</string>
+    <string name="tip_drive_carefully">Drive Carefully</string>
+    <string name="tip_low_visibility">Low visibility</string>
+    <string name="tip_high_uv">High UV index</string>
+    <string name="tip_mosquito_alert">Mosquito Alert</string>
+    <string name="tip_use_repellent">Use repellent</string>
+    <string name="tip_nice_day">Nice sunny day</string>
+    <string name="tip_keep_drinking">Keep drinking water</string>
+    <string name="tip_drink_regularly">Drink water regularly</string>
+
+    <!-- Weather Conditions -->
+    <string name="clear_sky">Clear sky</string>
+    <string name="mainly_clear">Mainly clear</string>
+    <string name="partly_cloudy">Partly cloudy</string>
+    <string name="overcast">Overcast</string>
+    <string name="fog">Fog</string>
+    <string name="drizzle">Drizzle</string>
+    <string name="rain">Rain</string>
+    <string name="rain_showers">Rain showers</string>
+    <string name="snow">Snow</string>
+    <string name="snow_showers">Snow showers</string>
+    <string name="thunderstorm">Thunderstorm</string>
+    <string name="thunderstorm_with_hail">Thunderstorm with hail</string>
+
+    <!-- Air Quality Components -->
+    <string name="pm25">PM2.5</string>
+    <string name="pm10">PM10</string>
+    <string name="so2">SO₂</string>
+    <string name="no2">NO₂</string>
+    <string name="o3">O₃</string>
+    <string name="co">CO</string>
+    <string name="real_feel">Real Feel</string>
+    <string name="wind">Wind</string>
+    <string name="rain">Rain</string>
+    <string name="wind_dir">Wind Dir</string>
+
+    <!-- Units -->
+    <string name="celsius">°C</string>
+    <string name="fahrenheit">°F</string>
+    <string name="kmh">km/h</string>
+    <string name="mph">mph</string>
+    <string name="mm">mm</string>
+    <string name="percent">%</string>
+    <string name="hpa">hPa</string>
+
+    <!-- Errors -->
+    <string name="error_loading_weather">Error loading weather data</string>
+    <string name="error_loading_location">Error loading location</string>
+    <string name="error_network">Network error. Please check your connection</string>
+    <string name="error_location_permission">Location permission denied</string>
+    <string name="try_again">Try Again</string>
+
+    <!-- Loading -->
+    <string name="loading">Loading...</string>
+    <string name="please_wait">Please wait</string>
 </resources>

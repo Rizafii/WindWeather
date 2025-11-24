@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -89,8 +90,8 @@ private fun AirQualityHeader(
                 tint = Color.White
             )
             Text(
-                text = "Air Quality",
-                color=Color.White,
+                text = stringResource(R.string.air_quality),
+                color = Color.White,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontSize = 18.sp
                 )
