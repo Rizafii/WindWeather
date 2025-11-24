@@ -70,4 +70,6 @@ dependencies {
     implementation(libs.navigation.compose)
     //Serialization
     implementation(libs.kotlinx.serialization.json)
+    //Media3 ExoPlayer
+    implementation(libs.bundles.media3)
 }

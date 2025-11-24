@@ -110,7 +110,7 @@ private fun Forecast(
             )
         } else {
             modifier.background(
-                color = Color.White.copy(alpha = 0.15f),
+                color = Color.White.copy(alpha = 0.2f),
                 shape = RoundedCornerShape(20.dp)
             )
         }
@@ -152,7 +152,7 @@ private fun Forecast(
             color = if (item.isSelected) {
                 Color.White.copy(alpha = 0.3f)
             } else {
-                Color.White.copy(alpha = 0.2f)
+                Color.White.copy(alpha = 0.5f)
             }
         )
     ) {

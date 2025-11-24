@@ -4,6 +4,23 @@ import androidlead.weatherappui.R
 
 object WeatherCodeMapper {
 
+    fun getWeatherVideo(weatherCode: Int): Int {
+        return when (weatherCode) {
+            0 -> R.raw.video_forecast // Clear sky - use forecast video for sunny day
+            1, 2, 3 -> R.raw.video_cloudy // Mainly clear, partly cloudy, and overcast
+            45, 48 -> R.raw.video_cloudy // Fog
+            51, 53, 55 -> R.raw.video_rain // Drizzle
+            61, 63, 65 -> R.raw.video_rain // Rain
+            71, 73, 75 -> R.raw.video_cloudy // Snow fall
+            77 -> R.raw.video_cloudy // Snow grains
+            80, 81, 82 -> R.raw.video_rain // Rain showers
+            85, 86 -> R.raw.video_cloudy // Snow showers
+            95 -> R.raw.video_storm // Thunderstorm
+            96, 99 -> R.raw.video_storm // Thunderstorm with hail
+            else -> R.raw.video_cloudy
+        }
+    }
+
     fun getWeatherIcon(weatherCode: Int): Int {
         return when (weatherCode) {
             0 -> R.drawable.img_sun // Clear sky

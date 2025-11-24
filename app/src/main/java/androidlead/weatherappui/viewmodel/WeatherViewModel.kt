@@ -34,6 +34,7 @@ data class WeatherUiState(
     val currentDate: String = "Monday, 12 Feb",
     val feelsLike: String = "Feels like 26°",
     val currentWeatherIcon: Int = R.drawable.img_sub_rain,
+    val currentWeatherVideo: Int = R.raw.video_rain,
     val error: String? = null,
     val hasLocationPermission: Boolean = false
 )
@@ -124,6 +125,7 @@ class WeatherViewModel(context: Context) : ViewModel() {
                     currentDate = getCurrentDate(),
                     feelsLike = "Current ${weatherResponse.current.temperature.toInt()}° • Feels like ${weatherResponse.current.apparentTemperature.toInt()}°",
                     currentWeatherIcon = WeatherCodeMapper.getWeatherIcon(weatherResponse.current.weatherCode),
+                    currentWeatherVideo = WeatherCodeMapper.getWeatherVideo(weatherResponse.current.weatherCode),
                     currentLocation = _uiState.value.currentLocation?.copy(name = locationName)
                         ?: Location(locationName, latitude, longitude)
                 )
