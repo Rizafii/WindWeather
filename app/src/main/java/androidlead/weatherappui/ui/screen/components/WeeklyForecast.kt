@@ -16,6 +16,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,7 +50,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun WeeklyForecast(
     modifier: Modifier = Modifier,
-    forecastItems: List<ForecastItem> = ForecastData
+    forecastItems: List<ForecastItem> = ForecastData,
+    onItemClick: (Int) -> Unit = {}
 ) {
     Column(
         modifier = modifier,
@@ -65,8 +67,10 @@ fun WeeklyForecast(
                 items = forecastItems,
                 key = { it.dayOfWeek }
             ) { item ->
+                val index = forecastItems.indexOf(item)
                 Forecast(
-                    item = item
+                    item = item,
+                    onClick = { onItemClick(index) }
                 )
             }
         }
@@ -85,7 +89,7 @@ private fun WeatherForecastHeader(
         Text(
             text = "Weekly forecast",
             style = MaterialTheme.typography.titleLarge,
-            color = ColorTextPrimary,
+            color = Color.White,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
@@ -96,7 +100,8 @@ private fun WeatherForecastHeader(
 @Composable
 private fun Forecast(
     modifier: Modifier = Modifier,
-    item: ForecastItem
+    item: ForecastItem,
+    onClick: () -> Unit = {}
 ) {
     val updatedModifier = remember(item.isSelected) {
         if (item.isSelected) {
@@ -110,7 +115,7 @@ private fun Forecast(
             )
         } else {
             modifier.background(
-                color = Color.White.copy(alpha = 0.2f),
+                color = Color.Black.copy(alpha = 0.1f),
                 shape = RoundedCornerShape(20.dp)
             )
         }
@@ -144,17 +149,11 @@ private fun Forecast(
     }
 
     Surface(
-        modifier = updatedModifier.width(65.dp),
+        modifier = updatedModifier
+            .width(65.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(20.dp),
         color = Color.Transparent,
-        border = androidx.compose.foundation.BorderStroke(
-            width = 1.dp,
-            color = if (item.isSelected) {
-                Color.White.copy(alpha = 0.3f)
-            } else {
-                Color.White.copy(alpha = 0.5f)
-            }
-        )
     ) {
         Column(
             modifier = Modifier.padding(
@@ -166,12 +165,12 @@ private fun Forecast(
         Text(
             text = item.dayOfWeek,
             style = MaterialTheme.typography.labelLarge,
-            color = primaryTextColor
+            color = Color.White
         )
         Text(
             text = item.date,
             style = MaterialTheme.typography.labelMedium,
-            color = secondaryTextColor,
+            color = Color.White.copy(alpha = 0.8f),
             fontWeight = FontWeight.Normal
         )
         Spacer(
@@ -187,6 +186,7 @@ private fun Forecast(
             text = item.temperature,
             letterSpacing = 0.sp,
             style = temperatureTextStyle,
+            color = Color.White
         )
         Spacer(
             modifier = Modifier.height(8.dp)

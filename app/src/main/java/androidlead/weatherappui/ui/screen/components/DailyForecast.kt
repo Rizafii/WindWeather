@@ -41,29 +41,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.compose.ui.tooling.preview.Preview
 
-@Preview(
-    showBackground = true,
-    backgroundColor = 0xFF101010,
-    showSystemUi = false
-)
-@Composable
-fun DailyForecastPreview() {
-    val sampleHourly = listOf(
-        HourlyForecastItem(time = "09:00", temperature = "22°", humidity = 80, weatherIcon = R.drawable.img_sub_rain),
-        HourlyForecastItem(time = "10:00", temperature = "23°", humidity = 78, weatherIcon = R.drawable.img_sub_rain),
-        HourlyForecastItem(time = "11:00", temperature = "24°", humidity = 75, weatherIcon = R.drawable.img_sub_rain),
-        HourlyForecastItem(time = "12:00", temperature = "25°", humidity = 70, weatherIcon = R.drawable.img_sub_rain),
-    )
-
-    DailyForecast(
-        forecast = "Rain Showers",
-        date = "Monday, 12 Feb",
-        degree = "21",
-        description = "Feels like 26°",
-        weatherIcon = R.drawable.img_sub_rain,
-        hourlyForecasts = sampleHourly
-    )
-}
 
 
 @Composable
@@ -194,13 +171,17 @@ private fun CardBackground(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                brush = Brush.linearGradient(
-                    0f to ColorGradient1,
-                    0.5f to ColorGradient2,
-                    1f to ColorGradient3
-                ),
+                color = Color.Black.copy(alpha=0.2f),
                 shape = RoundedCornerShape(32.dp)
             )
+//            .background(
+//                brush = Brush.linearGradient(
+//                    0f to ColorGradient1,
+//                    0.5f to ColorGradient2,
+//                    1f to ColorGradient3
+//                ),
+//                shape = RoundedCornerShape(32.dp)
+//            )
     )
 }
 

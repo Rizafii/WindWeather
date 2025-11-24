@@ -23,23 +23,28 @@ fun WeatherVideoBackground(
 
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
-            val uri = Uri.parse("android.resource://${context.packageName}/$videoResId")
-            setMediaItem(MediaItem.fromUri(uri))
             repeatMode = Player.REPEAT_MODE_ALL
             volume = 0f // Mute the video
-            prepare()
-            playWhenReady = true
         }
     }
 
     DisposableEffect(videoResId) {
         val uri = Uri.parse("android.resource://${context.packageName}/$videoResId")
         exoPlayer.apply {
+            stop()
+            clearMediaItems()
             setMediaItem(MediaItem.fromUri(uri))
             prepare()
             playWhenReady = true
         }
 
+        onDispose {
+            exoPlayer.stop()
+            exoPlayer.clearMediaItems()
+        }
+    }
+
+    DisposableEffect(Unit) {
         onDispose {
             exoPlayer.release()
         }

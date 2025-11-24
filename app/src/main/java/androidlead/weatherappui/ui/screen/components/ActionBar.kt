@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -68,7 +69,7 @@ private fun ControlButton(
             ),
     ) {
         Surface(
-            color = ColorSurface,
+            color = Color.Black.copy(alpha=0.2f),
             shape = CircleShape,
             modifier = Modifier.fillMaxSize()
         ) {
@@ -79,6 +80,7 @@ private fun ControlButton(
                 Image(
                     painter = painterResource(id = R.drawable.ic_control),
                     contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color.White),
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -125,7 +127,7 @@ private fun LocationInfo(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(50)) // Bentuk kapsul/pill
-            .background(color = Color.White)
+            .background(color = Color.Black.copy(alpha = 0.2f))
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -134,13 +136,14 @@ private fun LocationInfo(
         Image(
             painter = painterResource(id = R.drawable.ic_location_pin),
             contentDescription = null,
+            colorFilter = ColorFilter.tint(Color.White),
             modifier = Modifier.height(15.dp),
             contentScale = ContentScale.FillHeight
         )
         Text(
             text = location,
             style = MaterialTheme.typography.titleMedium,
-            color = ColorTextPrimary,
+            color = Color.White,
             fontWeight = FontWeight.SemiBold
         )
     }

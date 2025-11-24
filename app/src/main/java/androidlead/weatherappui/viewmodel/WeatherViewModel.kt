@@ -36,7 +36,8 @@ data class WeatherUiState(
     val currentWeatherIcon: Int = R.drawable.img_sub_rain,
     val currentWeatherVideo: Int = R.raw.video_rain,
     val error: String? = null,
-    val hasLocationPermission: Boolean = false
+    val hasLocationPermission: Boolean = false,
+    val selectedDayIndex: Int = 0
 )
 
 class WeatherViewModel(context: Context) : ViewModel() {
@@ -140,6 +141,7 @@ class WeatherViewModel(context: Context) : ViewModel() {
 
     private fun mapToForecastItems(weatherResponse: WeatherResponse): List<ForecastItem> {
         val dailyData = weatherResponse.daily
+        val selectedIndex = _uiState.value.selectedDayIndex
         return dailyData.time.mapIndexed { index, date ->
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -159,17 +161,52 @@ class WeatherViewModel(context: Context) : ViewModel() {
                 temperature = "$maxTemp°",
                 airQuality = uvIndex.toString(),
                 airQualityIndicatorColorHex = getAirQualityColor(uvIndex),
-                isSelected = index == 0
+                isSelected = index == selectedIndex
             )
         }
     }
 
-    private fun mapToAirQualityItems(weatherResponse: WeatherResponse): List<AirQualityItem> {
+    private fun mapToAirQualityItems(weatherResponse: WeatherResponse, dayIndex: Int = 0): List<AirQualityItem> {
+        val dailyData = weatherResponse.daily
+        val hourlyData = weatherResponse.hourly
         val current = weatherResponse.current
+
+        // Get data for selected day
+        val targetDate = if (dayIndex < dailyData.time.size) {
+            dailyData.time[dayIndex]
+        } else {
+            dailyData.time[0]
+        }
+
+        // Calculate average temperature and humidity from hourly data for the selected day
+        var avgTemp = 0.0
+        var avgHumidity = 0
+        var count = 0
+
+        hourlyData.time.forEachIndexed { index, timeString ->
+            if (timeString.startsWith(targetDate)) {
+                avgTemp += hourlyData.temperature[index]
+                avgHumidity += hourlyData.humidity[index]
+                count++
+            }
+        }
+
+        if (count > 0) {
+            avgTemp /= count
+            avgHumidity /= count
+        } else {
+            // Fallback to using min/max temp average
+            avgTemp = (dailyData.temperatureMax[dayIndex] + dailyData.temperatureMin[dayIndex]) / 2
+            avgHumidity = current.humidity
+        }
+
+        // Get UV Index for the selected day
+        val uvIndex = dailyData.uvIndexMax.getOrNull(dayIndex)?.toInt() ?: 0
+
         return listOf(
             AirQualityItem(
                 title = "Real Feel",
-                value = "${current.apparentTemperature.toInt()}°",
+                value = "${avgTemp.toInt()}°",
                 icon = R.drawable.ic_real_feel
             ),
             AirQualityItem(
@@ -179,17 +216,17 @@ class WeatherViewModel(context: Context) : ViewModel() {
             ),
             AirQualityItem(
                 title = "Humidity",
-                value = "${current.humidity}%",
+                value = "$avgHumidity%",
                 icon = R.drawable.ic_so2
             ),
             AirQualityItem(
                 title = "Rain",
-                value = "0%", // Open-Meteo doesn't provide rain chance in current weather
+                value = "0%",
                 icon = R.drawable.ic_rain_chance
             ),
             AirQualityItem(
                 title = "UV Index",
-                value = weatherResponse.daily.uvIndexMax.firstOrNull()?.toInt()?.toString() ?: "0",
+                value = uvIndex.toString(),
                 icon = R.drawable.ic_uv_index
             ),
             AirQualityItem(
@@ -200,18 +237,29 @@ class WeatherViewModel(context: Context) : ViewModel() {
         )
     }
 
-    private fun mapToHourlyForecastItems(weatherResponse: WeatherResponse): List<HourlyForecastItem> {
+    private fun mapToHourlyForecastItems(weatherResponse: WeatherResponse, dayIndex: Int = 0): List<HourlyForecastItem> {
         val hourlyData = weatherResponse.hourly
+        val dailyData = weatherResponse.daily
 
-        // Ambil 24 jam ke depan
-        return (0 until 24).mapNotNull { index ->
-            if (index < hourlyData.time.size) {
-                val timeString = hourlyData.time[index]
+        // Get the target date
+        val targetDate = if (dayIndex < dailyData.time.size) {
+            dailyData.time[dayIndex]
+        } else {
+            dailyData.time[0]
+        }
+
+        // Filter hourly data for the selected day and get up to 24 hours
+        val filteredHours = mutableListOf<HourlyForecastItem>()
+
+        hourlyData.time.forEachIndexed { index, timeString ->
+            if (filteredHours.size >= 24) return@forEachIndexed
+
+            if (timeString.startsWith(targetDate)) {
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
                 val calendar = Calendar.getInstance()
 
                 try {
-                    calendar.time = dateFormat.parse(timeString) ?: return@mapNotNull null
+                    calendar.time = dateFormat.parse(timeString) ?: return@forEachIndexed
 
                     val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
                     val displayTime = hourFormat.format(calendar.time)
@@ -220,19 +268,21 @@ class WeatherViewModel(context: Context) : ViewModel() {
                     val weatherCode = hourlyData.weatherCode[index]
                     val humidity = hourlyData.humidity[index]
 
-                    HourlyForecastItem(
-                        time = displayTime,
-                        temperature = "$temp°",
-                        weatherIcon = WeatherCodeMapper.getWeatherIcon(weatherCode),
-                        humidity = humidity
+                    filteredHours.add(
+                        HourlyForecastItem(
+                            time = displayTime,
+                            temperature = "$temp°",
+                            weatherIcon = WeatherCodeMapper.getWeatherIcon(weatherCode),
+                            humidity = humidity
+                        )
                     )
                 } catch (e: Exception) {
-                    null
+                    // Skip this hour if parsing fails
                 }
-            } else {
-                null
             }
         }
+
+        return filteredHours
     }
 
     private fun getCurrentDate(): String {
@@ -247,6 +297,49 @@ class WeatherViewModel(context: Context) : ViewModel() {
             uvIndex <= 5 -> "#f9cf5f" // Yellow - Moderate
             uvIndex <= 7 -> "#ff9966" // Orange - High
             else -> "#ff7676" // Red - Very High
+        }
+    }
+
+    fun selectDay(dayIndex: Int) {
+        val weatherData = _uiState.value.weatherData ?: return
+
+        // Update selected day index
+        _uiState.value = _uiState.value.copy(selectedDayIndex = dayIndex)
+
+        // Update forecast items with new selection
+        val forecastItems = mapToForecastItems(weatherData)
+
+        // Update current weather display based on selected day
+        val dailyData = weatherData.daily
+        if (dayIndex < dailyData.time.size) {
+            val selectedWeatherCode = dailyData.weatherCode[dayIndex]
+            val selectedMaxTemp = dailyData.temperatureMax[dayIndex].toInt()
+            val selectedMinTemp = dailyData.temperatureMin[dayIndex].toInt()
+            val selectedDate = dailyData.time[dayIndex]
+
+            // Format the selected date
+            val calendar = Calendar.getInstance()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            calendar.time = dateFormat.parse(selectedDate) ?: Date()
+            val formattedDate = SimpleDateFormat("EEEE, dd MMM", Locale.getDefault()).format(calendar.time)
+
+            // Update hourly forecast for selected day
+            val hourlyForecastItems = mapToHourlyForecastItems(weatherData, dayIndex)
+
+            // Update air quality for selected day
+            val airQualityItems = mapToAirQualityItems(weatherData, dayIndex)
+
+            _uiState.value = _uiState.value.copy(
+                forecastItems = forecastItems,
+                hourlyForecastItems = hourlyForecastItems,
+                airQualityItems = airQualityItems,
+                currentTemperature = selectedMaxTemp.toString(),
+                currentDescription = WeatherCodeMapper.getWeatherDescription(selectedWeatherCode),
+                currentDate = formattedDate,
+                feelsLike = "High $selectedMaxTemp° • Low $selectedMinTemp°",
+                currentWeatherIcon = WeatherCodeMapper.getWeatherIcon(selectedWeatherCode),
+                currentWeatherVideo = WeatherCodeMapper.getWeatherVideo(selectedWeatherCode)
+            )
         }
     }
 

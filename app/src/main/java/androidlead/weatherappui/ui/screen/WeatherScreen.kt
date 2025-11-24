@@ -93,7 +93,10 @@ fun WeatherScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     WeeklyForecast(
-                        forecastItems = uiState.forecastItems
+                        forecastItems = uiState.forecastItems,
+                        onItemClick = { dayIndex ->
+                            viewModel.selectDay(dayIndex)
+                        }
                     )
                 }
             }

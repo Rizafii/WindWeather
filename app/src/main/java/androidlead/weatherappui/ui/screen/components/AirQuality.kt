@@ -40,8 +40,8 @@ fun AirQuality(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(32.dp),
-        color = ColorSurface
+        shape = RoundedCornerShape(16.dp),
+        color = Color.Black.copy(alpha = 0.1f)
     ) {
         Column(
             modifier = Modifier.padding(
@@ -86,10 +86,11 @@ private fun AirQualityHeader(
                 painter = painterResource(R.drawable.ic_air_quality_header),
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = ColorAirQualityIconTitle
+                tint = Color.White
             )
             Text(
                 text = "Air Quality",
+                color=Color.White,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontSize = 18.sp
                 )
@@ -113,7 +114,7 @@ private fun AirQualityItemView(
             painter = painterResource(item.icon),
             contentDescription = null,
             modifier = Modifier.size(24.dp),
-            tint = ColorAirQualityIconTitle
+            tint = Color.White
         )
         Column(
             horizontalAlignment = Alignment.Start
@@ -121,12 +122,12 @@ private fun AirQualityItemView(
             Text(
                 text = item.title,
                 style = MaterialTheme.typography.labelSmall,
-                color = ColorTextPrimaryVariant
+                color = Color.White.copy(alpha = 0.9f)
             )
             Text(
                 text = item.value,
                 style = MaterialTheme.typography.labelSmall,
-                color = ColorTextPrimary
+                color = Color.White
             )
         }
     }
