@@ -26,7 +26,7 @@ data class LocationsUiState(
 
 class LocationsViewModel(
     private val repository: LocationRepository,
-    context: Context
+    private val context: Context
 ) : ViewModel() {
 
     private val weatherRepository = WeatherRepository()
@@ -59,7 +59,7 @@ class LocationsViewModel(
                 onSuccess = { weatherResponse ->
                     location.copy(
                         temperature = weatherResponse.current.temperature,
-                        weatherCondition = WeatherCodeMapper.getWeatherDescription(weatherResponse.current.weatherCode),
+                        weatherCondition = WeatherCodeMapper.getWeatherDescription(context, weatherResponse.current.weatherCode),
                         weatherIcon = WeatherCodeMapper.getWeatherIcon(weatherResponse.current.weatherCode).toString()
                     )
                 },
@@ -67,7 +67,7 @@ class LocationsViewModel(
                     location // Return location as is if failed
                 }
             )
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             location // Return location as is if exception
         }
     }
