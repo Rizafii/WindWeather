@@ -27,7 +27,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,34 +35,108 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 
+// Helper function untuk translate kondisi cuaca dengan deteksi English dan Indonesian
+@Composable
+private fun getTranslatedWeatherCondition(weatherCondition: String): String {
+    return when {
+        // Cerah/Sunny/Clear
+        weatherCondition.contains("sunny", ignoreCase = true) ||
+        weatherCondition.contains("clear", ignoreCase = true) ||
+        weatherCondition.contains("cerah", ignoreCase = true) -> stringResource(R.string.weather_sunny)
+
+        // Hujan/Rain
+        weatherCondition.contains("rain", ignoreCase = true) ||
+        weatherCondition.contains("hujan", ignoreCase = true) -> stringResource(R.string.weather_rain)
+
+        // Gerimis/Drizzle
+        weatherCondition.contains("drizzle", ignoreCase = true) ||
+        weatherCondition.contains("gerimis", ignoreCase = true) -> stringResource(R.string.weather_drizzle)
+
+        // Hujan Lokal/Shower
+        weatherCondition.contains("shower", ignoreCase = true) ||
+        weatherCondition.contains("hujan lokal", ignoreCase = true) -> stringResource(R.string.weather_shower)
+
+        // Berawan/Cloudy
+        weatherCondition.contains("cloudy", ignoreCase = true) ||
+        weatherCondition.contains("berawan", ignoreCase = true) ||
+        weatherCondition.contains("partly", ignoreCase = true) -> stringResource(R.string.weather_cloudy)
+
+        // Mendung/Overcast
+        weatherCondition.contains("overcast", ignoreCase = true) ||
+        weatherCondition.contains("mendung", ignoreCase = true) -> stringResource(R.string.weather_overcast)
+
+        // Cloud
+        weatherCondition.contains("cloud", ignoreCase = true) ||
+        weatherCondition.contains("awan", ignoreCase = true) -> stringResource(R.string.weather_cloud)
+
+        // Petir/Thunder/Thunderstorm
+        weatherCondition.contains("thunder", ignoreCase = true) ||
+        weatherCondition.contains("petir", ignoreCase = true) -> stringResource(R.string.weather_thunder)
+
+        // Badai/Storm
+        weatherCondition.contains("storm", ignoreCase = true) ||
+        weatherCondition.contains("badai", ignoreCase = true) -> stringResource(R.string.weather_storm)
+
+        // Kabut/Fog
+        weatherCondition.contains("fog", ignoreCase = true) ||
+        weatherCondition.contains("kabut", ignoreCase = true) -> stringResource(R.string.weather_fog)
+
+        // Kabut Tipis/Mist
+        weatherCondition.contains("mist", ignoreCase = true) ||
+        weatherCondition.contains("kabut tipis", ignoreCase = true) -> stringResource(R.string.weather_mist)
+
+        // Berkabut/Haze
+        weatherCondition.contains("haze", ignoreCase = true) ||
+        weatherCondition.contains("berkabut", ignoreCase = true) -> stringResource(R.string.weather_haze)
+
+        // Salju/Snow
+        weatherCondition.contains("snow", ignoreCase = true) ||
+        weatherCondition.contains("salju", ignoreCase = true) -> stringResource(R.string.weather_snow)
+
+        // Default - return original
+        else -> weatherCondition
+    }
+}
+
 // Helper function untuk mendapatkan warna card berdasarkan kondisi cuaca
 private fun getWeatherCardColor(weatherCondition: String): Color {
     return when {
         // Cerah/Sunny - Kuning
         weatherCondition.contains("sunny", ignoreCase = true) ||
-        weatherCondition.contains("clear", ignoreCase = true) -> Color(0xFFFFD54F)
+        weatherCondition.contains("clear", ignoreCase = true) ||
+        weatherCondition.contains("cerah", ignoreCase = true) -> Color(0xFFFFC900)
 
         // Hujan - Biru
         weatherCondition.contains("rain", ignoreCase = true) ||
         weatherCondition.contains("drizzle", ignoreCase = true) ||
-        weatherCondition.contains("shower", ignoreCase = true) -> Color(0xFF64B5F6)
+        weatherCondition.contains("shower", ignoreCase = true) ||
+        weatherCondition.contains("hujan", ignoreCase = true) ||
+        weatherCondition.contains("gerimis", ignoreCase = true) -> Color(0xFF0062B2)
 
         // Berawan - Abu-abu
         weatherCondition.contains("cloudy", ignoreCase = true) ||
         weatherCondition.contains("overcast", ignoreCase = true) ||
-        weatherCondition.contains("cloud", ignoreCase = true) -> Color(0xFFB0BEC5)
+        weatherCondition.contains("cloud", ignoreCase = true) ||
+        weatherCondition.contains("berawan", ignoreCase = true) ||
+        weatherCondition.contains("mendung", ignoreCase = true) ||
+        weatherCondition.contains("awan", ignoreCase = true) -> Color(0xFFB0BEC5)
 
         // Thunderstorm - Biru gelap
         weatherCondition.contains("thunder", ignoreCase = true) ||
-        weatherCondition.contains("storm", ignoreCase = true) -> Color(0xFF5C6BC0)
+        weatherCondition.contains("storm", ignoreCase = true) ||
+        weatherCondition.contains("petir", ignoreCase = true) ||
+        weatherCondition.contains("badai", ignoreCase = true) -> Color(0xFF000B5D)
 
         // Fog/Mist - Abu-abu muda
         weatherCondition.contains("fog", ignoreCase = true) ||
         weatherCondition.contains("mist", ignoreCase = true) ||
-        weatherCondition.contains("haze", ignoreCase = true) -> Color(0xFFCFD8DC)
+        weatherCondition.contains("haze", ignoreCase = true) ||
+        weatherCondition.contains("kabut", ignoreCase = true) ||
+        weatherCondition.contains("berkabut", ignoreCase = true) -> Color(0xFFCFD8DC)
 
         // Snow - Putih kebiruan
-        weatherCondition.contains("snow", ignoreCase = true) -> Color(0xFFE1F5FE)
+        weatherCondition.contains("snow", ignoreCase = true) ||
+        weatherCondition.contains("salju", ignoreCase = true) -> Color(0xFF56C9FF)
 
         // Default - Warna surface
         else -> ColorSurface.copy(alpha = 0.5f)

@@ -99,6 +99,22 @@
     <string name="tip_bring_jacket">Bring a light jacket</string>
     <string name="tip_warm_clothes">Warm Clothes</string>
     <string name="tip_dress_warmly">Dress warmly</string>
+
+    <!-- Weather Conditions -->
+    <string name="weather_sunny">Sunny</string>
+    <string name="weather_clear">Clear</string>
+    <string name="weather_rain">Rain</string>
+    <string name="weather_drizzle">Drizzle</string>
+    <string name="weather_shower">Shower</string>
+    <string name="weather_cloudy">Cloudy</string>
+    <string name="weather_overcast">Overcast</string>
+    <string name="weather_cloud">Cloud</string>
+    <string name="weather_thunder">Thunder</string>
+    <string name="weather_storm">Storm</string>
+    <string name="weather_fog">Fog</string>
+    <string name="weather_mist">Mist</string>
+    <string name="weather_haze">Haze</string>
+    <string name="weather_snow">Snow</string>
     <string name="tip_winter_jacket">Winter Jacket</string>
     <string name="tip_quite_cold">It\'s quite cold</string>
     <string name="tip_bring_umbrella">Bring Umbrella</string>
