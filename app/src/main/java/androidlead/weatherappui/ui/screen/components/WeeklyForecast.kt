@@ -12,6 +12,8 @@ import androidlead.weatherappui.ui.theme.ColorTextPrimary
 import androidlead.weatherappui.ui.theme.ColorTextPrimaryVariant
 import androidlead.weatherappui.ui.theme.ColorTextSecondary
 import androidlead.weatherappui.ui.theme.ColorTextSecondaryVariant
+import androidlead.weatherappui.ui.theme.DarkBlue
+import androidlead.weatherappui.ui.theme.LightBlue
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -109,9 +111,8 @@ private fun Forecast(
             modifier.background(
                 shape = RoundedCornerShape(20.dp),
                 brush = Brush.linearGradient(
-                    0f to ColorGradient1,
-                    0.5f to ColorGradient2,
-                    1f to ColorGradient3
+                    0f to DarkBlue,
+                    1f to LightBlue
                 )
             )
         } else {

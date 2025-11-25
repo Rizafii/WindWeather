@@ -9,6 +9,8 @@ val Pink80 = Color(0xFFEFB8C8)
 val ColorGradient1 = Color(0xFFe262e6)
 val ColorGradient2 = Color(0xFF9f62ea)
 val ColorGradient3 = Color(0xFF5264f0)
+val DarkBlue = Color(0xFF00469A)
+val LightBlue = Color(0xFF0073FF)
 
 val ColorBackground = Color(0xFFFFFFFF)
 val ColorSurface = Color.White
