@@ -28,6 +28,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -411,9 +412,15 @@ private fun LocationItem(
                     ) {
                         Text(
                             text = location.name,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                shadow = Shadow(
+                                    color = Color.Black.copy(alpha = 0.5f),
+                                    offset = androidx.compose.ui.geometry.Offset(2f, 2f),
+                                    blurRadius = 1f
+                                )
+                            ),
                             color = Color.White,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                         // Badge untuk current location
                         if (location.isCurrentLocation) {
@@ -433,12 +440,24 @@ private fun LocationItem(
                     }
                     Text(
                         text = location.country,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            shadow = Shadow(
+                                color = Color.Black.copy(alpha = 0.4f),
+                                offset = androidx.compose.ui.geometry.Offset(1f, 1f),
+                                blurRadius = 1f
+                            )
+                        ),
                         color = ColorTextSecondary
                     )
                     Text(
-                        text = location.weatherCondition,
-                        style = MaterialTheme.typography.bodySmall,
+                        text = getTranslatedWeatherCondition(location.weatherCondition),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            shadow = Shadow(
+                                color = Color.Black.copy(alpha = 0.4f),
+                                offset = androidx.compose.ui.geometry.Offset(1f, 1f),
+                                blurRadius = 1f
+                            )
+                        ),
                         color = ColorTextSecondary
                     )
                 }
@@ -451,7 +470,13 @@ private fun LocationItem(
             ) {
                 Text(
                     text = "${location.temperature.toInt()}°",
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        shadow = Shadow(
+                            color = Color.Black.copy(alpha = 0.5f),
+                            offset = androidx.compose.ui.geometry.Offset(2f, 2f),
+                            blurRadius = 1f
+                        )
+                    ),
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
