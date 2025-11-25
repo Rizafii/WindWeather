@@ -9,10 +9,11 @@ data class AirQualityItem(
     val value: String
 )
 
+// Sample data for preview - actual data comes from WeatherViewModel
 val AirQualityData = listOf(
     AirQualityItem(
         title = "Real Feel",
-        value = "23.8",
+        value = "23.8°",
         icon = R.drawable.ic_real_feel
     ),
     AirQualityItem(
@@ -21,8 +22,8 @@ val AirQualityData = listOf(
         icon = R.drawable.ic_wind_qality,
     ),
     AirQualityItem(
-        title = "SO2",
-        value = "0.9",
+        title = "Humidity",
+        value = "0.9%",
         icon = R.drawable.ic_so2
     ),
     AirQualityItem(
@@ -36,8 +37,8 @@ val AirQualityData = listOf(
         icon = R.drawable.ic_uv_index
     ),
     AirQualityItem(
-        title = "OЗ",
-        value = "50",
+        title = "Wind Dir",
+        value = "50°",
         icon = R.drawable.ic_o3
     )
 )

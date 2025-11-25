@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -178,7 +177,6 @@ private fun SettingsModal(
     val context = LocalContext.current
     val prefsManager = remember { PreferencesManager.getInstance(context) }
 
-    var selectedLanguage by remember { mutableStateOf(prefsManager.language) }
     var selectedMode by remember { mutableStateOf(prefsManager.theme) }
 
     Dialog(onDismissRequest = onDismiss) {
@@ -202,46 +200,6 @@ private fun SettingsModal(
                     color = Color.Black
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Language Section
-                Text(
-                    text = stringResource(R.string.language_section),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black.copy(alpha = 0.7f),
-                    fontSize = 14.sp
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Language Options
-                SettingsOptionItem(
-                    text = stringResource(R.string.language_indonesian),
-                    isSelected = selectedLanguage == PreferencesManager.LANGUAGE_INDONESIAN,
-                    onClick = {
-                        selectedLanguage = PreferencesManager.LANGUAGE_INDONESIAN
-                        prefsManager.language = PreferencesManager.LANGUAGE_INDONESIAN
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                SettingsOptionItem(
-                    text = stringResource(R.string.language_english),
-                    isSelected = selectedLanguage == PreferencesManager.LANGUAGE_ENGLISH,
-                    onClick = {
-                        selectedLanguage = PreferencesManager.LANGUAGE_ENGLISH
-                        prefsManager.language = PreferencesManager.LANGUAGE_ENGLISH
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                HorizontalDivider(
-                    color = Color.Black.copy(alpha = 0.1f),
-                    thickness = 1.dp
-                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
