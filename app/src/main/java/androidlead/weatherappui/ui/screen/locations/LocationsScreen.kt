@@ -438,17 +438,32 @@ private fun LocationItem(
                             )
                         }
                     }
-                    Text(
-                        text = location.country,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            shadow = Shadow(
-                                color = Color.Black.copy(alpha = 0.4f),
-                                offset = androidx.compose.ui.geometry.Offset(1f, 1f),
-                                blurRadius = 1f
-                            )
-                        ),
-                        color = ColorTextSecondary
-                    )
+                    // Display state and country
+                    if (location.state.isNotEmpty()) {
+                        Text(
+                            text = "${location.state}, ${location.country}",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                shadow = Shadow(
+                                    color = Color.Black.copy(alpha = 0.4f),
+                                    offset = androidx.compose.ui.geometry.Offset(1f, 1f),
+                                    blurRadius = 1f
+                                )
+                            ),
+                            color = ColorTextSecondary
+                        )
+                    } else {
+                        Text(
+                            text = location.country,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                shadow = Shadow(
+                                    color = Color.Black.copy(alpha = 0.4f),
+                                    offset = androidx.compose.ui.geometry.Offset(1f, 1f),
+                                    blurRadius = 1f
+                                )
+                            ),
+                            color = ColorTextSecondary
+                        )
+                    }
                     Text(
                         text = getTranslatedWeatherCondition(location.weatherCondition),
                         style = MaterialTheme.typography.bodySmall.copy(
@@ -628,12 +643,6 @@ private fun AddLocationDialog(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.padding(horizontal = 4.dp)
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_location_pin),
-                                contentDescription = null,
-                                modifier = Modifier.size(16.dp),
-                                tint = ColorTextPrimary.copy(alpha = 0.6f)
-                            )
                             Text(
                                 text = "Type at least 2 characters to search",
                                 style = MaterialTheme.typography.bodySmall,
@@ -720,12 +729,6 @@ private fun AddLocationDialog(
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         verticalArrangement = Arrangement.spacedBy(12.dp)
                                     ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_location_pin),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(64.dp),
-                                            tint = ColorTextPrimary.copy(alpha = 0.3f)
-                                        )
                                         Text(
                                             text = "Start typing to search",
                                             style = MaterialTheme.typography.bodyLarge,
@@ -817,11 +820,20 @@ private fun SearchResultItem(
                             modifier = Modifier.size(14.dp),
                             tint = ColorTextPrimary.copy(alpha = 0.6f)
                         )
-                        Text(
-                            text = location.country,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = ColorTextPrimary.copy(alpha = 0.6f)
-                        )
+                        // Display state and country if state is available
+                        if (location.state.isNotEmpty()) {
+                            Text(
+                                text = "${location.state}, ${location.country}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = ColorTextPrimary.copy(alpha = 0.6f)
+                            )
+                        } else {
+                            Text(
+                                text = location.country,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = ColorTextPrimary.copy(alpha = 0.6f)
+                            )
+                        }
                     }
                     if (location.weatherCondition.isNotEmpty()) {
                         Text(

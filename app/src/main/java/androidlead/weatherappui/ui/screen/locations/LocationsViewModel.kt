@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import java.util.UUID
 
 data class LocationsUiState(
@@ -35,6 +37,12 @@ class LocationsViewModel(
 
     private val _uiState = MutableStateFlow(LocationsUiState())
     val uiState: StateFlow<LocationsUiState> = _uiState.asStateFlow()
+
+    private var searchJob: Job? = null
+
+    companion object {
+        private const val SEARCH_DELAY = 500L // milliseconds
+    }
 
     init {
         loadSavedLocations()
@@ -74,8 +82,16 @@ class LocationsViewModel(
 
     fun onSearchQueryChange(query: String) {
         _uiState.value = _uiState.value.copy(searchQuery = query)
+
+        // Cancel previous search job
+        searchJob?.cancel()
+
         if (query.length >= 2) {
-            searchLocations(query)
+            // Start new search job with delay (debounce)
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DELAY)
+                searchLocations(query)
+            }
         } else {
             _uiState.value = _uiState.value.copy(searchResults = emptyList())
         }
@@ -96,6 +112,7 @@ class LocationsViewModel(
                             id = UUID.randomUUID().toString(),
                             name = result.name,
                             country = result.country ?: "",
+                            state = result.admin1 ?: "", // Add state/province
                             latitude = result.latitude,
                             longitude = result.longitude
                         )
