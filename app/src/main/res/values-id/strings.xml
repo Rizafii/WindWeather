@@ -51,7 +51,10 @@
     <!-- Location -->
     <string name="add_location">Tambah Lokasi</string>
     <string name="search_location">Cari lokasi...</string>
+    <string name="search_cities_worldwide">Cari kota di seluruh dunia</string>
     <string name="current_location">Lokasi Saat Ini</string>
+    <string name="my_location">Lokasi Saya</string>
+    <string name="unknown_location">Lokasi Tidak Diketahui</string>
     <string name="saved_locations">Lokasi Tersimpan</string>
     <string name="select_location">Pilih Lokasi</string>
     <string name="no_locations">Tidak ada lokasi tersimpan</string>
@@ -71,8 +74,16 @@
     <!-- Search -->
     <string name="search">Cari</string>
     <string name="searching">Mencari...</string>
+    <string name="searching_locations">Mencari lokasi...</string>
     <string name="no_results">Tidak ada hasil ditemukan</string>
+    <string name="no_locations_found">Tidak ada lokasi ditemukan</string>
+    <string name="try_different_search">Coba kata kunci pencarian lain</string>
+    <string name="start_typing_to_search">Mulai mengetik untuk mencari</string>
+    <string name="find_cities_worldwide">Temukan kota dari seluruh dunia</string>
+    <string name="type_to_search">Ketik minimal 2 karakter untuk mencari</string>
     <string name="enter_location_name">Masukkan nama lokasi...</string>
+    <string name="gps">GPS</string>
+    <string name="add">Tambah</string>
 
     <!-- Weather Tips -->
     <string name="weather_tips">Tips Cuaca</string>
@@ -129,7 +140,6 @@
     <string name="co">CO</string>
     <string name="real_feel">Terasa</string>
     <string name="wind">Angin</string>
-    <string name="rain">Hujan</string>
     <string name="wind_dir">Arah Angin</string>
 
     <!-- Units -->
@@ -146,6 +156,7 @@
     <string name="error_loading_location">Gagal memuat lokasi</string>
     <string name="error_network">Kesalahan jaringan. Periksa koneksi Anda</string>
     <string name="error_location_permission">Izin lokasi ditolak</string>
+    <string name="error_unknown">Kesalahan tidak diketahui</string>
     <string name="try_again">Coba Lagi</string>
 
     <!-- Loading -->
