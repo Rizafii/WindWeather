@@ -23,3 +23,11 @@ val ColorTextPrimaryVariant = ColorTextPrimary.copy(alpha = 0.7f)
 val ColorTextSecondary = Color.White
 val ColorTextSecondaryVariant = ColorTextSecondary.copy(alpha = 0.7f)
 val ColorTextAction = ColorGradient2
+
+// Dark Mode Colors for Locations Screen
+val ColorBackgroundDark = Color(0xFF121212)
+val ColorSurfaceDark = Color(0xFF1E1E1E)
+val ColorCardDark = Color(0xFF2C2C2C)
+val ColorTextPrimaryDark = Color(0xFFE0E0E0)
+val ColorTextSecondaryDark = Color(0xFFB0B0B0)
+

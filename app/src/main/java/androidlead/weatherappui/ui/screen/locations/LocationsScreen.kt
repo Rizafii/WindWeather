@@ -2,15 +2,21 @@ package androidlead.weatherappui.ui.screen.locations
 
 import androidlead.weatherappui.R
 import androidlead.weatherappui.data.model.SavedLocation
+import androidlead.weatherappui.ui.theme.ColorBackgroundDark
+import androidlead.weatherappui.ui.theme.ColorCardDark
 import androidlead.weatherappui.ui.theme.ColorGradient3
 import androidlead.weatherappui.ui.theme.ColorSurface
+import androidlead.weatherappui.ui.theme.ColorSurfaceDark
 import androidlead.weatherappui.ui.theme.ColorTextPrimary
+import androidlead.weatherappui.ui.theme.ColorTextPrimaryDark
 import androidlead.weatherappui.ui.theme.ColorTextSecondary
+import androidlead.weatherappui.ui.theme.ColorTextSecondaryDark
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -35,6 +41,41 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+
+// Data class untuk menyimpan warna tema
+data class LocationsThemeColors(
+    val background: Color,
+    val surface: Color,
+    val card: Color,
+    val textPrimary: Color,
+    val textSecondary: Color,
+    val textOnCard: Color
+)
+
+// Helper function untuk mendapatkan warna berdasarkan tema sistem
+@Composable
+private fun getThemeColors(): LocationsThemeColors {
+    val isDark = isSystemInDarkTheme()
+    return if (isDark) {
+        LocationsThemeColors(
+            background = ColorBackgroundDark,
+            surface = ColorSurfaceDark,
+            card = ColorCardDark,
+            textPrimary = ColorTextPrimaryDark,
+            textSecondary = ColorTextSecondaryDark,
+            textOnCard = ColorTextPrimaryDark
+        )
+    } else {
+        LocationsThemeColors(
+            background = Color.Transparent,
+            surface = ColorSurface,
+            card = ColorSurface,
+            textPrimary = ColorTextPrimary,
+            textSecondary = ColorTextSecondary,
+            textOnCard = ColorTextPrimary
+        )
+    }
+}
 
 // Helper function untuk translate kondisi cuaca dengan deteksi English dan Indonesian
 @Composable
@@ -152,17 +193,18 @@ fun LocationsScreen(
     onLocationSelected: (SavedLocation) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val themeColors = getThemeColors()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.saved_locations), color = ColorTextPrimary) },
+                title = { Text(stringResource(R.string.saved_locations), color = themeColors.textPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = stringResource(R.string.back),
-                            tint = ColorTextPrimary
+                            tint = themeColors.textPrimary
                         )
                     }
                 },
@@ -174,33 +216,33 @@ fun LocationsScreen(
                         if (uiState.isLoading) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(24.dp),
-                                color = ColorTextPrimary,
+                                color = themeColors.textPrimary,
                                 strokeWidth = 2.dp
                             )
                         } else {
                             Icon(
                                 Icons.Default.Refresh,
                                 contentDescription = stringResource(R.string.refresh_weather),
-                                tint = ColorTextPrimary
+                                tint = themeColors.textPrimary
                             )
                         }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent
+                    containerColor = themeColors.background
                 )
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { viewModel.showAddDialog() },
-                containerColor = ColorSurface,
-                contentColor = ColorTextPrimary
+                containerColor = ColorGradient3,
+                contentColor = Color.White
             ) {
                 Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_location))
             }
         },
-        containerColor = Color.Transparent
+        containerColor = themeColors.background
     ) { padding ->
         Box(
             modifier = Modifier
@@ -208,7 +250,7 @@ fun LocationsScreen(
                 .padding(padding)
         ) {
             if (uiState.savedLocations.isEmpty()) {
-                EmptyLocationsList()
+                EmptyLocationsList(themeColors)
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -219,7 +261,8 @@ fun LocationsScreen(
                     item {
                         AddCurrentLocationButton(
                             onClick = { viewModel.addCurrentLocation() },
-                            hasPermission = viewModel.hasLocationPermission()
+                            hasPermission = viewModel.hasLocationPermission(),
+                            themeColors = themeColors
                         )
                     }
 
@@ -231,7 +274,8 @@ fun LocationsScreen(
                                 onLocationSelected(location)
                                 onNavigateBack()
                             },
-                            onDelete = { viewModel.deleteLocation(location.id) }
+                            onDelete = { viewModel.deleteLocation(location.id) },
+                            themeColors = themeColors
                         )
                     }
                 }
@@ -244,7 +288,8 @@ fun LocationsScreen(
                     isSearching = uiState.isSearching,
                     onSearchQueryChange = { viewModel.onSearchQueryChange(it) },
                     onLocationSelect = { viewModel.addLocation(it) },
-                    onDismiss = { viewModel.hideAddDialog() }
+                    onDismiss = { viewModel.hideAddDialog() },
+                    themeColors = themeColors
                 )
             }
         }
@@ -254,7 +299,8 @@ fun LocationsScreen(
 @Composable
 private fun AddCurrentLocationButton(
     onClick: () -> Unit,
-    hasPermission: Boolean
+    hasPermission: Boolean,
+    themeColors: LocationsThemeColors
 ) {
     Card(
         modifier = Modifier
@@ -297,7 +343,7 @@ private fun AddCurrentLocationButton(
                 Text(
                     text = if (hasPermission) stringResource(R.string.add_current_location) else stringResource(R.string.location_permission_required),
                     style = MaterialTheme.typography.bodySmall,
-                    color = ColorTextSecondary
+                    color = Color.White.copy(alpha = 0.8f)
                 )
             }
 
@@ -311,7 +357,7 @@ private fun AddCurrentLocationButton(
 }
 
 @Composable
-private fun EmptyLocationsList() {
+private fun EmptyLocationsList(themeColors: LocationsThemeColors) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -324,17 +370,17 @@ private fun EmptyLocationsList() {
                 painter = painterResource(id = R.drawable.ic_location_pin),
                 contentDescription = null,
                 modifier = Modifier.size(64.dp),
-                tint = ColorTextSecondary
+                tint = themeColors.textSecondary
             )
             Text(
                 text = stringResource(R.string.no_locations),
                 style = MaterialTheme.typography.bodyLarge,
-                color = ColorTextSecondary
+                color = themeColors.textSecondary
             )
             Text(
                 text = stringResource(R.string.add_first_location),
                 style = MaterialTheme.typography.bodyMedium,
-                color = ColorTextSecondary
+                color = themeColors.textSecondary
             )
         }
     }
@@ -345,7 +391,8 @@ private fun EmptyLocationsList() {
 private fun LocationItem(
     location: SavedLocation,
     onClick: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    themeColors: LocationsThemeColors
 ) {
     var showDelete by remember { mutableStateOf(false) }
     val cardColor = getWeatherCardColor(location.weatherCondition)
@@ -522,7 +569,8 @@ private fun AddLocationDialog(
     isSearching: Boolean,
     onSearchQueryChange: (String) -> Unit,
     onLocationSelect: (SavedLocation) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    themeColors: LocationsThemeColors
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(
@@ -531,7 +579,7 @@ private fun AddLocationDialog(
                 .heightIn(max = 600.dp),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(
-                containerColor = ColorSurface
+                containerColor = themeColors.surface
             ),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
@@ -602,7 +650,7 @@ private fun AddLocationDialog(
                         placeholder = {
                             Text(
                                 "Search city name...",
-                                color = ColorTextSecondary.copy(alpha = 0.6f)
+                                color = themeColors.textSecondary.copy(alpha = 0.6f)
                             )
                         },
                         leadingIcon = {
@@ -619,17 +667,17 @@ private fun AddLocationDialog(
                                     Icon(
                                         Icons.Default.Close,
                                         contentDescription = "Clear",
-                                        tint = ColorTextSecondary,
+                                        tint = themeColors.textSecondary,
                                         modifier = Modifier.size(20.dp)
                                     )
                                 }
                             }
                         },
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = ColorTextPrimary,
-                            unfocusedTextColor = ColorTextPrimary,
+                            focusedTextColor = themeColors.textPrimary,
+                            unfocusedTextColor = themeColors.textPrimary,
                             focusedBorderColor = ColorGradient3,
-                            unfocusedBorderColor = ColorGradient3,
+                            unfocusedBorderColor = ColorGradient3.copy(alpha = 0.5f),
                             cursorColor = ColorGradient3
                         ),
                         shape = RoundedCornerShape(16.dp),
@@ -646,7 +694,7 @@ private fun AddLocationDialog(
                             Text(
                                 text = "Type at least 2 characters to search",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = ColorTextPrimary.copy(alpha = 0.6f)
+                                color = themeColors.textPrimary.copy(alpha = 0.6f)
                             )
                         }
                     }
@@ -674,7 +722,7 @@ private fun AddLocationDialog(
                                         Text(
                                             text = "Searching locations...",
                                             style = MaterialTheme.typography.bodyMedium,
-                                            color = ColorTextPrimary.copy(alpha = 0.6f)
+                                            color = themeColors.textPrimary.copy(alpha = 0.6f)
                                         )
                                     }
                                 }
@@ -686,7 +734,8 @@ private fun AddLocationDialog(
                                     items(searchResults) { location ->
                                         SearchResultItem(
                                             location = location,
-                                            onClick = { onLocationSelect(location) }
+                                            onClick = { onLocationSelect(location) },
+                                            themeColors = themeColors
                                         )
                                     }
                                 }
@@ -704,18 +753,18 @@ private fun AddLocationDialog(
                                             Icons.Default.Search,
                                             contentDescription = null,
                                             modifier = Modifier.size(48.dp),
-                                            tint = ColorTextSecondary.copy(alpha = 0.3f)
+                                            tint = themeColors.textSecondary.copy(alpha = 0.3f)
                                         )
                                         Text(
                                             text = "No locations found",
                                             style = MaterialTheme.typography.bodyLarge,
-                                            color = ColorTextSecondary,
+                                            color = themeColors.textSecondary,
                                             fontWeight = FontWeight.Medium
                                         )
                                         Text(
                                             text = "Try a different search term",
                                             style = MaterialTheme.typography.bodySmall,
-                                            color = ColorTextSecondary.copy(alpha = 0.7f)
+                                            color = themeColors.textSecondary.copy(alpha = 0.7f)
                                         )
                                     }
                                 }
@@ -732,13 +781,13 @@ private fun AddLocationDialog(
                                         Text(
                                             text = "Start typing to search",
                                             style = MaterialTheme.typography.bodyLarge,
-                                            color = ColorTextPrimary.copy(alpha = 0.6f),
+                                            color = themeColors.textPrimary.copy(alpha = 0.6f),
                                             fontWeight = FontWeight.Medium
                                         )
                                         Text(
                                             text = "Find cities from around the world",
                                             style = MaterialTheme.typography.bodySmall,
-                                            color = ColorTextPrimary.copy(alpha = 0.6f)
+                                            color = themeColors.textPrimary.copy(alpha = 0.6f)
                                         )
                                     }
                                 }
@@ -754,7 +803,8 @@ private fun AddLocationDialog(
 @Composable
 private fun SearchResultItem(
     location: SavedLocation,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    themeColors: LocationsThemeColors
 ) {
     val cardColor = getWeatherCardColor(location.weatherCondition)
 
@@ -807,7 +857,7 @@ private fun SearchResultItem(
                     Text(
                         text = location.name,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = ColorTextPrimary,
+                        color = themeColors.textPrimary,
                         fontWeight = FontWeight.Bold
                     )
                     Row(
@@ -818,20 +868,20 @@ private fun SearchResultItem(
                             painter = painterResource(id = R.drawable.ic_location_pin),
                             contentDescription = null,
                             modifier = Modifier.size(14.dp),
-                            tint = ColorTextPrimary.copy(alpha = 0.6f)
+                            tint = themeColors.textPrimary.copy(alpha = 0.6f)
                         )
                         // Display state and country if state is available
                         if (location.state.isNotEmpty()) {
                             Text(
                                 text = "${location.state}, ${location.country}",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = ColorTextPrimary.copy(alpha = 0.6f)
+                                color = themeColors.textPrimary.copy(alpha = 0.6f)
                             )
                         } else {
                             Text(
                                 text = location.country,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = ColorTextPrimary.copy(alpha = 0.6f)
+                                color = themeColors.textPrimary.copy(alpha = 0.6f)
                             )
                         }
                     }
@@ -839,7 +889,7 @@ private fun SearchResultItem(
                         Text(
                             text = location.weatherCondition,
                             style = MaterialTheme.typography.bodySmall,
-                            color = ColorTextPrimary.copy(alpha = 0.6f)
+                            color = themeColors.textPrimary.copy(alpha = 0.6f)
                         )
                     }
                 }
@@ -853,7 +903,7 @@ private fun SearchResultItem(
                 Text(
                     text = "${location.temperature.toInt()}°",
                     style = MaterialTheme.typography.headlineMedium,
-                    color = ColorTextPrimary,
+                    color = themeColors.textPrimary,
                     fontWeight = FontWeight.Bold
                 )
                 Box(
