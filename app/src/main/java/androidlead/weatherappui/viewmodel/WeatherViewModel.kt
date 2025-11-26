@@ -76,18 +76,47 @@ class WeatherViewModel(private val context: Context) : ViewModel() {
         viewModelScope.launch {
             // Try to load selected location from cache
             val cachedLocation = locationRepository.getSelectedLocation().first()
+            val savedLocations = locationRepository.getSavedLocations().first()
 
-            if (cachedLocation != null && locationRepository.isLocationCacheValid(cachedLocation)) {
+            // Check if this is first launch (no saved locations and no cached selected location)
+            if (savedLocations.isEmpty() && cachedLocation == null && locationService.hasLocationPermission()) {
+                // First launch with permission - automatically load GPS location
+                loadCurrentLocationWeatherAndSave()
+            } else if (cachedLocation != null && locationRepository.isLocationCacheValid(cachedLocation)) {
                 // Use cached data (loadless)
                 loadFromCachedLocation(cachedLocation)
             } else if (cachedLocation != null) {
                 // Show cached data first, then refresh
                 loadFromCachedLocation(cachedLocation)
                 loadWeather(cachedLocation.latitude, cachedLocation.longitude, cachedLocation.name)
+            } else if (savedLocations.isNotEmpty()) {
+                // Load first saved location if no selected location
+                val firstLocation = savedLocations.first()
+                loadWeather(firstLocation.latitude, firstLocation.longitude, firstLocation.name)
             } else {
-                // No cache, load default location
+                // No cache, no saved locations - load default location
                 loadWeatherForLocation(defaultLocations[0])
             }
+        }
+    }
+
+    private suspend fun loadCurrentLocationWeatherAndSave() {
+        _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+
+        val locationCoords = locationService.getCurrentLocation()
+        if (locationCoords != null) {
+            val (lat, lon) = locationCoords
+            val cityName = locationService.getCityName(lat, lon)
+            val currentLocation = Location(cityName, lat, lon, isCurrentLocation = true)
+
+            _uiState.value = _uiState.value.copy(currentLocation = currentLocation)
+
+            // Load weather and automatically save to saved locations
+            loadWeatherAndSaveAsCurrentLocation(lat, lon, cityName)
+        } else {
+            // If GPS fails, fall back to default location
+            _uiState.value = _uiState.value.copy(isLoading = false)
+            loadWeatherForLocation(defaultLocations[0])
         }
     }
 
@@ -202,6 +231,80 @@ class WeatherViewModel(private val context: Context) : ViewModel() {
                     lastUpdated = System.currentTimeMillis()
                 )
                 locationRepository.selectLocation(cachedLocation)
+            }.onFailure { exception ->
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = exception.message ?: "Failed to load weather data"
+                )
+            }
+        }
+    }
+
+    private fun loadWeatherAndSaveAsCurrentLocation(latitude: Double, longitude: Double, locationName: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+
+            val result = repository.getWeather(latitude, longitude)
+
+            result.onSuccess { weatherResponse ->
+                val forecastItems = mapToForecastItems(weatherResponse)
+                val airQualityItems = mapToAirQualityItems(weatherResponse)
+                val hourlyForecastItems = mapToHourlyForecastItems(weatherResponse)
+
+                // Get current date formatted
+                val calendar = Calendar.getInstance()
+                val formattedDate = SimpleDateFormat("EEEE, dd MMM", Locale.getDefault()).format(calendar.time)
+
+                // Generate weather tips
+                val weatherTips = WeatherCodeMapper.getWeatherTips(
+                    context = context,
+                    weatherCode = weatherResponse.current.weatherCode,
+                    temperature = weatherResponse.current.temperature.toInt(),
+                    uvIndex = weatherResponse.daily.uvIndexMax.firstOrNull()?.toInt() ?: 0,
+                    humidity = weatherResponse.current.humidity
+                )
+
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    weatherData = weatherResponse,
+                    forecastItems = forecastItems,
+                    hourlyForecastItems = hourlyForecastItems,
+                    airQualityItems = airQualityItems,
+                    weatherTips = weatherTips,
+                    currentTemperature = weatherResponse.current.temperature.toInt().toString(),
+                    currentDescription = WeatherCodeMapper.getWeatherDescription(context, weatherResponse.current.weatherCode),
+                    currentDate = formattedDate,
+                    feelsLike = context.getString(R.string.feels_like) + " ${weatherResponse.current.apparentTemperature.toInt()}°",
+                    currentWeatherIcon = WeatherCodeMapper.getWeatherIcon(weatherResponse.current.weatherCode),
+                    currentWeatherVideo = WeatherCodeMapper.getWeatherVideo(weatherResponse.current.weatherCode),
+                    currentLocation = _uiState.value.currentLocation?.copy(name = locationName)
+                        ?: Location(locationName, latitude, longitude)
+                )
+
+                // Save to both selected location cache AND saved locations with isCurrentLocation flag
+                val currentLocationData = SavedLocation(
+                    id = "current_location",
+                    name = locationName,
+                    country = "My Location",
+                    latitude = latitude,
+                    longitude = longitude,
+                    temperature = weatherResponse.current.temperature,
+                    weatherCondition = WeatherCodeMapper.getWeatherDescription(context, weatherResponse.current.weatherCode),
+                    weatherIcon = WeatherCodeMapper.getWeatherIcon(weatherResponse.current.weatherCode).toString(),
+                    humidity = weatherResponse.current.humidity,
+                    windSpeed = weatherResponse.current.windSpeed,
+                    apparentTemperature = weatherResponse.current.apparentTemperature,
+                    weatherCode = weatherResponse.current.weatherCode,
+                    isCurrentLocation = true,
+                    lastUpdated = System.currentTimeMillis()
+                )
+
+                // Save as selected location
+                locationRepository.selectLocation(currentLocationData)
+
+                // Also save to saved locations list
+                locationRepository.saveLocation(currentLocationData)
+
             }.onFailure { exception ->
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,

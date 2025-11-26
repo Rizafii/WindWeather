@@ -54,13 +54,48 @@ class LocationsViewModel(
                 // First, show cached data immediately (loadless)
                 _uiState.value = _uiState.value.copy(savedLocations = locations)
 
-                // Then, update only stale locations in the background
-                val staleLocations = locations.filter { !repository.isLocationCacheValid(it) }
-                if (staleLocations.isNotEmpty()) {
-                    updateStaleLocations(staleLocations)
+                // Check if this is the first launch (no saved locations)
+                if (locations.isEmpty() && hasLocationPermission()) {
+                    // Automatically add GPS location on first launch
+                    addCurrentLocationOnFirstLaunch()
+                } else {
+                    // Then, update only stale locations in the background
+                    val staleLocations = locations.filter { !repository.isLocationCacheValid(it) }
+                    if (staleLocations.isNotEmpty()) {
+                        updateStaleLocations(staleLocations)
+                    }
                 }
             }
         }
+    }
+
+    private suspend fun addCurrentLocationOnFirstLaunch() {
+        _uiState.value = _uiState.value.copy(isLoading = true)
+
+        val locationCoords = locationService.getCurrentLocation()
+
+        if (locationCoords != null) {
+            val (lat, lon) = locationCoords
+            val cityName = locationService.getCityName(lat, lon)
+
+            // Buat SavedLocation dengan flag isCurrentLocation
+            val currentLocation = SavedLocation(
+                id = "current_location",
+                name = cityName,
+                country = "My Location",
+                latitude = lat,
+                longitude = lon,
+                isCurrentLocation = true
+            )
+
+            // Fetch weather data
+            val locationWithWeather = updateLocationWeather(currentLocation)
+
+            // Save ke repository
+            repository.saveLocation(locationWithWeather)
+        }
+
+        _uiState.value = _uiState.value.copy(isLoading = false)
     }
 
     private suspend fun updateStaleLocations(staleLocations: List<SavedLocation>) {

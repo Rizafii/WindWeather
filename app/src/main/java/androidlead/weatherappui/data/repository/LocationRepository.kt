@@ -30,7 +30,9 @@ class LocationRepository(private val context: Context) {
         return context.dataStore.data.map { preferences ->
             val locationsJson = preferences[SAVED_LOCATIONS_KEY] ?: "[]"
             try {
-                json.decodeFromString<List<SavedLocation>>(locationsJson)
+                val locations = json.decodeFromString<List<SavedLocation>>(locationsJson)
+                // Sort locations: GPS location (isCurrentLocation = true) first, then others
+                locations.sortedByDescending { it.isCurrentLocation }
             } catch (e: Exception) {
                 emptyList()
             }
