@@ -51,12 +51,22 @@ class LocationsViewModel(
     private fun loadSavedLocations() {
         viewModelScope.launch {
             repository.getSavedLocations().collect { locations ->
-                // Update weather data untuk setiap location
-                val locationsWithWeather = locations.map { location ->
-                    updateLocationWeather(location)
+                // First, show cached data immediately (loadless)
+                _uiState.value = _uiState.value.copy(savedLocations = locations)
+
+                // Then, update only stale locations in the background
+                val staleLocations = locations.filter { !repository.isLocationCacheValid(it) }
+                if (staleLocations.isNotEmpty()) {
+                    updateStaleLocations(staleLocations)
                 }
-                _uiState.value = _uiState.value.copy(savedLocations = locationsWithWeather)
             }
+        }
+    }
+
+    private suspend fun updateStaleLocations(staleLocations: List<SavedLocation>) {
+        staleLocations.forEach { location ->
+            val updatedLocation = updateLocationWeather(location)
+            repository.updateLocationWeatherData(location.id, updatedLocation)
         }
     }
 
@@ -68,7 +78,12 @@ class LocationsViewModel(
                     location.copy(
                         temperature = weatherResponse.current.temperature,
                         weatherCondition = WeatherCodeMapper.getWeatherDescription(context, weatherResponse.current.weatherCode),
-                        weatherIcon = WeatherCodeMapper.getWeatherIcon(weatherResponse.current.weatherCode).toString()
+                        weatherIcon = WeatherCodeMapper.getWeatherIcon(weatherResponse.current.weatherCode).toString(),
+                        humidity = weatherResponse.current.humidity,
+                        windSpeed = weatherResponse.current.windSpeed,
+                        apparentTemperature = weatherResponse.current.apparentTemperature,
+                        weatherCode = weatherResponse.current.weatherCode,
+                        lastUpdated = System.currentTimeMillis()
                     )
                 },
                 onFailure = {
@@ -167,7 +182,10 @@ class LocationsViewModel(
 
             val currentLocations = _uiState.value.savedLocations
             val updatedLocations = currentLocations.map { location ->
-                updateLocationWeather(location)
+                val updated = updateLocationWeather(location)
+                // Save updated data to cache
+                repository.updateLocationWeatherData(location.id, updated)
+                updated
             }
 
             _uiState.value = _uiState.value.copy(

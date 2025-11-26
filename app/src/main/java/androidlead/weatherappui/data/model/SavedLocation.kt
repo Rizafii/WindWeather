@@ -14,6 +14,11 @@ data class SavedLocation(
     val weatherCondition: String = "",
     val weatherIcon: String = "",
     val isSelected: Boolean = false,
-    val isCurrentLocation: Boolean = false // Flag untuk lokasi GPS user
+    val isCurrentLocation: Boolean = false, // Flag untuk lokasi GPS user
+    val lastUpdated: Long = 0L, // Timestamp untuk cache invalidation
+    val humidity: Int = 0,
+    val windSpeed: Double = 0.0,
+    val apparentTemperature: Double = 0.0,
+    val weatherCode: Int = 0
 )
 
