@@ -1,6 +1,8 @@
-# 🌤️ WindWeather - Modern Weather App
-
 <div align="center">
+
+<img src="readme/logo.png" alt="WindWeather Logo" width="200"/>
+
+# 🌤️ WindWeather - Modern Weather App
 
 ![Android](https://img.shields.io/badge/Platform-Android-green.svg)
 ![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)
@@ -19,12 +21,14 @@ A beautiful and modern weather application built with Jetpack Compose featuring 
 ## ✨ Features
 
 ### 🌍 Location Management
+
 - **GPS Location Detection** - Automatically detect and display weather for your current location
 - **Multiple Saved Locations** - Save and manage multiple locations
 - **Location Search** - Search for cities worldwide with geocoding API
 - **Current Location Marker** - Special indicator for GPS-based location
 
 ### 🌡️ Weather Information
+
 - **Real-time Weather Data** - Current temperature, feels like, humidity, wind speed, and more
 - **7-Day Forecast** - Interactive weekly weather forecast
 - **24-Hour Forecast** - Hourly weather predictions with detailed metrics
@@ -32,6 +36,7 @@ A beautiful and modern weather application built with Jetpack Compose featuring 
 - **Air Quality Index** - Real-time air quality metrics including UV index
 
 ### 🎨 User Interface
+
 - **Glassmorphism Design** - Modern frosted glass effect on cards
 - **Dynamic Video Backgrounds** - Weather-specific animated backgrounds
   - Clear sky, cloudy, rainy, thunderstorm, snowy, foggy conditions
@@ -40,18 +45,21 @@ A beautiful and modern weather application built with Jetpack Compose featuring 
 - **Dark Mode Support** - System-based dark/light theme switching
 
 ### 🌐 Multi-Language Support
+
 - **English** - Full English localization
 - **Bahasa Indonesia** - Complete Indonesian translation
 - **Dynamic Language Switching** - Change language from settings modal
 - **154+ Localized Strings** - All UI elements and weather tips translated
 
 ### 💡 Smart Features
+
 - **Weather Tips** - Context-aware weather advice based on conditions
 - **Loadless Experience** - Cached data for instant app startup
 - **Auto-refresh** - Smart cache invalidation and background updates
 - **Offline Support** - Display cached data when offline
 
 ### 📊 Weather Details
+
 - Real Feel Temperature
 - Wind Speed & Direction
 - Humidity Percentage
@@ -64,7 +72,23 @@ A beautiful and modern weather application built with Jetpack Compose featuring 
 
 ## 📱 Screenshots
 
-> Add your app screenshots here
+<div align="center">
+
+### Home Screen
+
+<img src="readme/home.jpg" alt="Home Screen" width="250"/>
+
+### Saved Locations
+
+<img src="readme/saved.jpg" alt="Saved Locations" width="250"/>
+
+### Search Location
+
+<img src="readme/search.jpg" alt="Search Location" width="250"/>
+
+_Weather information with glassmorphism design, dynamic backgrounds, and interactive forecasts_
+
+</div>
 
 ---
 
@@ -105,6 +129,7 @@ File → Sync Project with Gradle Files
 Or click the 🐘 Gradle Sync icon in the toolbar.
 
 **Wait for the sync to complete** - this will download all required dependencies:
+
 - Jetpack Compose libraries
 - Retrofit & OkHttp for networking
 - DataStore for local storage
@@ -132,6 +157,7 @@ Or press: `Ctrl+F9` (Windows/Linux) / `Cmd+F9` (Mac)
 The app uses [Open-Meteo API](https://open-meteo.com/) which doesn't require an API key. If you want to use a different weather API:
 
 1. Add your API key to `local.properties`:
+
 ```properties
 WEATHER_API_KEY=your_api_key_here
 ```
@@ -242,37 +268,45 @@ app/src/main/
 ## 🛠️ Technologies Used
 
 ### Core
+
 - **Kotlin** - Modern programming language for Android
 - **Jetpack Compose** - Declarative UI framework
 - **Material 3** - Material Design components
 
 ### Architecture & Lifecycle
+
 - **MVVM Pattern** - Model-View-ViewModel architecture
 - **ViewModel** - Lifecycle-aware data holder
 - **StateFlow** - Reactive state management
 - **Coroutines** - Asynchronous programming
 
 ### Networking
+
 - **Retrofit 2** - Type-safe HTTP client
 - **OkHttp 3** - HTTP client for Android
 - **Kotlinx Serialization** - JSON serialization
 
 ### Storage
+
 - **DataStore Preferences** - Modern data storage solution
 - **Shared Preferences** - Legacy settings storage
 
 ### Location
+
 - **Google Play Services Location** - Location services
 - **Geocoding API** - Reverse geocoding for city names
 
 ### Media
+
 - **ExoPlayer (Media3)** - Video playback for backgrounds
 - **Coil** - Image loading library
 
 ### Dependency Injection
+
 - **Manual DI** - ViewModel factory pattern
 
 ### API
+
 - **[Open-Meteo API](https://open-meteo.com/)** - Free weather data API
   - Current weather
   - 7-day forecast
@@ -354,6 +388,7 @@ implementation("androidx.media3:media3-ui:1.1.1")
 ## 📝 API Endpoints
 
 ### Weather Data
+
 ```
 GET https://api.open-meteo.com/v1/forecast
 Parameters:
@@ -366,6 +401,7 @@ Parameters:
 ```
 
 ### Geocoding
+
 ```
 GET https://geocoding-api.open-meteo.com/v1/search
 Parameters:
@@ -380,12 +416,14 @@ Parameters:
 ## 🎨 Design Features
 
 ### Glassmorphism Effect
+
 - Frosted glass background with blur
 - Semi-transparent cards with white overlay
 - Border radius for modern look
 - Subtle shadows and gradients
 
 ### Dynamic Backgrounds
+
 - **Clear Day** - Sunny blue sky video
 - **Cloudy** - Moving clouds video
 - **Rain** - Rainfall animation
@@ -394,6 +432,7 @@ Parameters:
 - **Fog** - Misty atmosphere
 
 ### Color System
+
 - **Primary** - Modern blue accent
 - **Background** - Gradient overlays
 - **Surface** - Glassmorphism cards
@@ -453,7 +492,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Firmansyah**
 
-- GitHub: [@yourusername](https://github.com/yourusername)
+- GitHub: [@Rizafii](https://github.com/Rizafii)
 
 ---
 
@@ -483,4 +522,3 @@ Made with ❤️ and ☕ by Firmansyah
 ⭐ Star this repo if you find it helpful!
 
 </div>
-
