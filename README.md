@@ -511,7 +511,7 @@ If you have any questions or issues, please:
 
 1. Check the [documentation files](.) in the repository
 2. Open an issue on GitHub
-3. Contact via email: your.email@example.com
+3. Contact via email: rizafidev@gmail.com
 
 ---
 
